@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "732170564370",
+    "project_id": "daveexpress-13f3e",
+    "storage_bucket": "daveexpress-13f3e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732170564370:android:9d53a26ec69454319d79cb",
+        "android_client_info": {
+          "package_name": "com.example.daveexpress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "732170564370-poarknchl003pt5qco3t0am33qrbd34i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.daveexpress",
+            "certificate_hash": "f044e066ca1b10bddd0a8648d471f9c360ee61f8"
+          }
+        },
+        {
+          "client_id": "732170564370-cb09b56jmvjpumsalgtn50410qbsubcj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAq-FWzys8WubIwrMEHj4PbhJZKhDzx0SU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "732170564370-cb09b56jmvjpumsalgtn50410qbsubcj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

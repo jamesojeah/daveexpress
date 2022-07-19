@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".activities.ui.fragments.DashboardFragment">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:scrollbars="none"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <View
+                android:layout_width="@dimen/spacing_middle"
+                android:layout_height="0dp" />
+<!--            android:onClick="TaballClick"-->
+            <Button
+                android:id="@+id/tab_all"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="ALL"
+                android:textColor="@android:color/white" />
+
+<!--            android:onClick="onButtonTabClick"-->
+
+            <Button
+                android:id="@+id/tab_shoes"
+                android:onClick="onClick"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="SHOES"
+                android:textColor="@android:color/white" />
+
+
+            <Button
+                android:id="@+id/tab_shirts"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="@string/rb_lbl_shirts"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/tab_trousers"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="TROUSERS"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/tab_hoodies"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="@string/rb_lbl_hoodies"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/tab_othercategories"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/spacing_xmlarge"
+                android:background="@drawable/tab_rounded_accent"
+                android:paddingLeft="@dimen/spacing_xlarge"
+                android:paddingRight="@dimen/spacing_xlarge"
+                android:text="@string/rb_lbl_other_category"
+                android:textColor="@android:color/white" />
+
+            <View
+                android:layout_width="@dimen/spacing_middle"
+                android:layout_height="0dp" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_dashboard_items"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+    android:layout_marginTop="60dp"
+        android:layout_marginBottom="60dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_no_dashboard_items_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/no_dashboard_item_found"
+        android:textAlignment="center"
+        android:textSize="@dimen/no_data_found_textSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
