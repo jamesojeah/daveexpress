@@ -1,10 +1,13 @@
 package com.example.daveexpress.activities
 
 import android.content.Intent
+import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.daveexpress.R
@@ -16,6 +19,8 @@ import com.example.daveexpress.utils.Constants
 import com.example.daveexpress.utils.GlideLoader
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
+import kotlin.math.roundToInt
 
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
 
@@ -51,10 +56,12 @@ private lateinit var mProductDetails: Product
             binding.rgSales.visibility = View.VISIBLE
             binding.tvSalesHeading.visibility = View.VISIBLE
             binding.tvSalesPriceHeading.visibility = View.INVISIBLE
+            binding.etSalesprice.visibility = View.INVISIBLE
             binding.tilSales.visibility = View.INVISIBLE
             binding.btnSubmitSaleprice.visibility = View.INVISIBLE
             binding.rbSaleNo.visibility = View.VISIBLE
-            binding.rbSaleYes.visibility =View.VISIBLE
+            binding.rbSaleYes.visibility = View.VISIBLE
+            binding.btnStopsales.visibility = View.INVISIBLE
 
         } else {
             binding.btnAddToCart.visibility = View.VISIBLE
@@ -66,27 +73,133 @@ private lateinit var mProductDetails: Product
             binding.tvSalesHeading.visibility = View.GONE
             binding.tilSales.visibility = View.GONE
             binding.tvSalesPriceHeading.visibility = View.GONE
+            binding.etSalesprice.visibility = View.GONE
             binding.rbSaleNo.visibility = View.GONE
             binding.rbSaleYes.visibility =View.GONE
             binding.btnSubmitSaleprice.visibility = View.GONE
+            binding.btnStopsales.visibility = View.GONE
         }
 
         binding.rgSales.setOnCheckedChangeListener { _, checkedId ->
-            if (checkedId == R.id.rb_sale_yes) {
+            if (checkedId == R.id.rb_sale_yes && FirestoreClass().getCurrentUserID() == mProductOwnerId) {
                 binding.tilSales.visibility = View.VISIBLE
                 binding.tvSalesPriceHeading.visibility = View.VISIBLE
+                binding.etSalesprice.visibility = View.VISIBLE
                 binding.btnSubmitSaleprice.visibility = View.VISIBLE
-            } else {
+                binding.btnStopsales.visibility = View.INVISIBLE
+            } else if(checkedId == R.id.rb_sale_no && FirestoreClass().getCurrentUserID() == mProductOwnerId){
                 binding.tilSales.visibility = View.GONE
                 binding.tvSalesPriceHeading.visibility = View.GONE
                 binding.btnSubmitSaleprice.visibility = View.GONE
+                binding.etSalesprice.visibility = View.GONE
+                binding.btnStopsales.visibility = View.VISIBLE
+            }
+            else  {
+                binding.tilSales.visibility = View.GONE
+                binding.tvSalesPriceHeading.visibility = View.GONE
+                binding.btnSubmitSaleprice.visibility = View.GONE
+                binding.etSalesprice.visibility = View.GONE
+                binding.btnStopsales.visibility = View.GONE
+
             }
         }
         getProductDetails()
+
+//        mProductDetails = Product()
+
         binding.btnAddToCart.setOnClickListener(this)
         binding.btnGoToCart.setOnClickListener(this)
+
+        binding.btnStopsales.setOnClickListener {
+        if (binding.tvProductDetailsSalePrice.text?.isNotEmpty() == true ||
+                binding.tvProductDetailsSalePrice.visibility == VISIBLE) {
+            stopsales()
+        }else{
+            showErrorSnackBar(
+                resources.getString(R.string.err_msg_enter_salesprice), true)
+        }
+
+        }
+
+        binding.btnSubmitSaleprice.setOnClickListener {
+            if (binding.etSalesprice.text.isNullOrEmpty()){
+                showErrorSnackBar(
+                    resources.getString(R.string.err_msg_enter_salesprice), true)
+            } else {
+                submitSalesPrice()
+//                displayPercentageOff()
+            }
+        }
     }
 
+    fun stopsales(){
+
+        var sale_status: String = when {
+            binding.rbSaleNo.isChecked -> {
+                Constants.NO
+            }
+            else -> {
+                Constants.YES
+            }
+        }
+
+        val salesStatusHashmap = HashMap<String, Any>()
+        salesStatusHashmap[Constants.SALE_STATUS] = sale_status
+        FirestoreClass().saleStatus(this, mProductId, salesStatusHashmap)
+
+        var salesPrice = ""
+        val salesHashMap = HashMap<String, Any>()
+
+        salesHashMap[Constants.SALES_PRICE] = salesPrice
+
+        FirestoreClass().addSalesPrice(this, mProductId, salesHashMap)
+
+        binding.tvOnSaleNow.visibility = View.GONE
+        binding.tvProductDetailsSalePrice.visibility = View.GONE
+        binding.tvProductDetailsPercentOff.visibility = View.GONE
+
+    }
+
+    fun submitSalesPrice(){
+
+        var sale_status: String = when {
+            binding.rbSaleNo.isChecked -> {
+                Constants.NO
+            }
+            else -> {
+                Constants.YES
+            }
+        }
+
+        val salesStatusHashmap = HashMap<String, Any>()
+        salesStatusHashmap[Constants.SALE_STATUS] = sale_status
+        FirestoreClass().saleStatus(this, mProductId, salesStatusHashmap)
+
+
+        var salesPrice = binding.etSalesprice.text.toString().trim { it <= ' ' }
+        val salesHashMap = HashMap<String, Any>()
+
+        salesHashMap[Constants.SALES_PRICE] = salesPrice
+
+        FirestoreClass().addSalesPrice(this, mProductId, salesHashMap)
+
+    }
+
+    open fun salesPriceUpdateSuccess(){
+            Toast.makeText(
+                this@ProductDetailsActivity,
+                resources.getString(R.string.success_salesprice),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
+    open fun saleStatusSuccess(){
+
+    }
+
+    open fun percentageOffSuccess(){
+
+    }
     private fun setupActionBar() {
 
         setSupportActionBar(binding.toolbarProductDetailsActivity)
@@ -135,36 +248,74 @@ private lateinit var mProductDetails: Product
         binding.tvProductDetailsDescription.text = product.description
         binding.tvProductDetailsAvailableQuantity.text = product.stock_quantity
         binding.tvAvailablesizesBody.text = product.available_sizes
+        binding.tvProductDetailsSalePrice.text = "₦${product.sale_price}"
 
-        // TODO Step 8: Update the UI if the stock quantity is 0.
-        // START
-         if (product.stock_quantity.toInt() == 0) {
+        if (product.sale_price == ""){
+            binding.tvProductDetailsSalePrice.visibility = View.GONE
+            binding.tvProductDetailsPercentOff.visibility = View.GONE
+            binding.tvOnSaleNow.visibility = View.GONE
+        }else{
+            val intOriginalPrice =  product.price.toDouble()
+            val intSalePrice =  product.sale_price.toDouble()
 
-            // Hide Progress dialog.
-            hideProgressDialog()
+            val discountedPrice = intOriginalPrice - intSalePrice
+            val value = discountedPrice/intOriginalPrice
 
-            // Hide the AddToCart button if the item is already in the cart.
-            binding.btnAddToCart.visibility = View.GONE
+            var percentageOff = (value * 100).roundToInt()
 
-            binding.tvProductDetailsAvailableQuantity.text =
-                resources.getString(R.string.lbl_out_of_stock)
+            val percentageHashMap = HashMap<String, Any>()
+            val thePercentageOff = percentageOff.toString()
+            percentageHashMap[Constants.PERCENTAGE_OFF] = thePercentageOff
 
-        binding.tvProductDetailsAvailableQuantity.setTextColor(
-                ContextCompat.getColor(
-                    this@ProductDetailsActivity,
-                    R.color.colorSnackBarError
-                )
-            )
-        } else {
+            FirestoreClass().displayPercentageOff(this, mProductId,  percentageHashMap)
 
-            // There is no need to check the cart list if the product owner himself is seeing the product details.
-            if (FirestoreClass().getCurrentUserID() == product.user_id) {
-                // Hide Progress dialog.
-                hideProgressDialog()
-            } else {
-                FirestoreClass().checkIfItemExistInCart(this@ProductDetailsActivity, mProductId)
+            binding.tvProductDetailsPrice.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            binding.tvProductDetailsSalePrice.visibility = View.VISIBLE
+            binding.tvProductDetailsPercentOff.visibility = View.VISIBLE
+            binding.tvOnSaleNow.visibility = View.VISIBLE
+        }
+
+        binding.tvProductDetailsPercentOff.text = "${product.percentage_off}% OFF"
+
+        when (product.sale_status) {
+            Constants.YES -> {
+                binding.rbSaleYes.isChecked = true
+            }
+            else -> {
+                binding.rbSaleNo.isChecked = true
             }
         }
+
+                // TODO Step 8: Update the UI if the stock quantity is 0.
+                // START
+            if (product.stock_quantity.toInt() == 0) {
+
+                // Hide Progress dialog.
+                hideProgressDialog()
+
+                // Hide the AddToCart button if the item is already in the cart.
+                binding.btnAddToCart.visibility = View.GONE
+
+                binding.tvProductDetailsAvailableQuantity.text =
+                    resources.getString(R.string.lbl_out_of_stock)
+
+                binding.tvProductDetailsAvailableQuantity.setTextColor(
+                    ContextCompat.getColor(
+                        this@ProductDetailsActivity,
+                        R.color.colorSnackBarError
+                    )
+                )
+            } else {
+
+                // There is no need to check the cart list if the product owner himself is seeing the product details.
+                if (FirestoreClass().getCurrentUserID() == product.user_id) {
+                    // Hide Progress dialog.
+                    hideProgressDialog()
+                } else {
+                    FirestoreClass().checkIfItemExistInCart(this@ProductDetailsActivity, mProductId)
+                }
+            }
+
     }
 
 
@@ -172,20 +323,23 @@ private lateinit var mProductDetails: Product
      * A function to prepare the cart item to add it to the cart.
      */
     private fun addToCart() {
-        mStockQuantity = binding.tvProductDetailsAvailableQuantity.text.toString()
-        mChosenSize = binding.etSelectsize.text.toString()
-        val addToCart = CartItem(
-            FirestoreClass().getCurrentUserID(),
-            mProductOwnerId,
-            mProductId,
-            mProductDetails.title,
-            mProductDetails.price,
-            mProductDetails.image,
-            Constants.DEFAULT_CART_QUANTITY,
-            mStockQuantity,
-            mChosenSize
 
-        )
+            mStockQuantity = binding.tvProductDetailsAvailableQuantity.text.toString()
+            mChosenSize = binding.etSelectsize.text.toString()
+            val addToCart = CartItem(
+                FirestoreClass().getCurrentUserID(),
+                mProductOwnerId,
+                mProductId,
+                mProductDetails.title,
+                mProductDetails.price,
+                mProductDetails.image,
+                Constants.DEFAULT_CART_QUANTITY,
+                mStockQuantity,
+                mChosenSize,
+                mProductDetails.sale_price,
+                mProductDetails.sale_status
+            )
+
         // Show the progress dialog
         showProgressDialog(resources.getString(R.string.please_wait))
 

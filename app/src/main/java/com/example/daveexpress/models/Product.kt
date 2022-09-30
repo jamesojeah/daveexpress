@@ -1,6 +1,7 @@
 package com.example.daveexpress.models
 
 import android.os.Parcelable
+import com.example.daveexpress.utils.Constants
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -15,5 +16,8 @@ data class Product(
     val image: String = "",
     val available_sizes: String = "",
     val product_datetime: Long = 0L,
-    var product_id: String = "",
+    var productId: String = "",
+    val sale_price: String = "",
+    val percentage_off: String = "",
+    val sale_status: String = ""
 ): Parcelable

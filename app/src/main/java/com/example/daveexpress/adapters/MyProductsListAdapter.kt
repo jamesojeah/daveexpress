@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -13,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.daveexpress.R
 import com.example.daveexpress.activities.ProductDetailsActivity
 import com.example.daveexpress.activities.ui.fragments.ProductsFragment
-import com.example.daveexpress.databinding.FragmentProductsBinding
 import com.example.daveexpress.models.Product
 import com.example.daveexpress.utils.Constants
 import com.example.daveexpress.utils.GlideLoader
+import com.example.daveexpress.utils.ProductListViewState
 
-open class MyProductsListAdapter (
-    private val context: Context,
-    private var list: ArrayList<Product>,
-    private val fragment: ProductsFragment
+open class MyProductsListAdapter(
+    val context: Context,
+    var list: ArrayList<Product>,
+    val fragment: ProductsFragment
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
@@ -47,12 +46,12 @@ open class MyProductsListAdapter (
 
             holder.itemView.findViewById<ImageButton>(R.id.ib_delete_product).setOnClickListener {
 
-                fragment.deleteProduct(model.product_id)
+                fragment.deleteProduct(model.productId)
             }
             holder.itemView.setOnClickListener {
                 // Launch Product details screen.
                 val intent = Intent(context, ProductDetailsActivity::class.java)
-                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.product_id)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.productId)
                 intent.putExtra(Constants.EXTRA_PRODUCT_OWNER_ID, model.user_id)
                 context.startActivity(intent)
             }

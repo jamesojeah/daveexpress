@@ -25,6 +25,8 @@ open class CheckoutActivity : BaseActivity() {
     private lateinit var mProductsList: ArrayList<Product>
   private  lateinit var mCartItemsList: ArrayList<CartItem>
     private var mSubTotal: Double = 0.0
+    private var mSubTotalSale: Double = 0.0
+    private var mSubTotalNosale: Double = 0.0
     private var mTotalAmount: Double = 0.0
     private lateinit var mOrderDetails: Order
 
@@ -121,7 +123,7 @@ open class CheckoutActivity : BaseActivity() {
         // Update the stock quantity in the cart list from the product list.
         for (product in mProductsList) {
             for (cartItem in cartList) {
-                if (product.product_id == cartItem.product_id) {
+                if (product.productId == cartItem.product_id) {
                     cartItem.stock_quantity = product.stock_quantity
                 }
             }
@@ -145,23 +147,30 @@ open class CheckoutActivity : BaseActivity() {
 
             val availableQuantity = item.stock_quantity.toInt()
 
-            if (availableQuantity > 0) {
+            if (availableQuantity > 0 && item.sale_status == Constants.NO) {
                 val price = item.price.toDouble()
                 val quantity = item.cart_quantity.toInt()
 
-                mSubTotal += (price * quantity)
+                mSubTotalNosale += (price * quantity)
+            } else if (availableQuantity > 0 && item.sale_status == Constants.YES){
+                val price = item.sale_price.toDouble()
+                val quantity = item.cart_quantity.toInt()
+
+                mSubTotalSale += (price * quantity)
             }
+
+            mSubTotal = mSubTotalNosale + mSubTotalSale
         }
 
-        binding.tvCheckoutSubTotal.text = "$$mSubTotal"
+        binding.tvCheckoutSubTotal.text = "₦$mSubTotal"
         // Here we have kept Shipping Charge is fixed as $10 but in your case it may cary. Also, it depends on the location and total amount.
-        binding.tvCheckoutShippingCharge.text = "$10.0"
+        binding.tvCheckoutShippingCharge.text = "₦10.0"
 
         if (mSubTotal > 0) {
             binding.llCheckoutPlaceOrder.visibility = View.VISIBLE
 
             mTotalAmount = mSubTotal + 10.0
-            binding.tvCheckoutTotalAmount.text = "$$mTotalAmount"
+            binding.tvCheckoutTotalAmount.text = "₦$mTotalAmount"
         } else {
             binding.llCheckoutPlaceOrder.visibility = View.GONE
         }
@@ -170,30 +179,39 @@ open class CheckoutActivity : BaseActivity() {
         // TODO Step 9: Calculate the subtotal and Total Amount.
         // START
         var subTotal: Double = 0.0
+        var subTotalSale: Double = 0.0
+        var subTotalNoSale: Double = 0.0
 
         for (item in mCartItemsList) {
 
             val availableQuantity = item.stock_quantity.toInt()
 
-            if (availableQuantity > 0) {
+            if (availableQuantity > 0 && item.sale_status == Constants.NO) {
                 val price = item.price.toDouble()
                 val quantity = item.cart_quantity.toInt()
 
-                subTotal += (price * quantity)
+                subTotalNoSale += (price * quantity)
+            } else if(availableQuantity > 0 && item.sale_status == Constants.YES){
+                val price = item.sale_price.toDouble()
+                val quantity = item.cart_quantity.toInt()
+
+                subTotalSale += (price * quantity)
             }
+
+            subTotal = subTotalNoSale + subTotalSale
         }
 
-        binding.tvCheckoutSubTotal.text = "$$subTotal"
+        binding.tvCheckoutSubTotal.text = "₦$subTotal"
 
         //TODO: Look at this shipping fee code
         // Here we have kept Shipping Charge is fixed as $10 but in your case it may cary. Also, it depends on the location and total amount.
-        binding.tvCheckoutShippingCharge.text = "$10.0"
+        binding.tvCheckoutShippingCharge.text = "₦10.0"
 
         if (subTotal > 0) {
             binding.llCheckoutPlaceOrder.visibility = View.VISIBLE
 
             val total = subTotal + 10
-            binding.tvCheckoutTotalAmount.text = "$$total"
+            binding.tvCheckoutTotalAmount.text = "₦$total"
         } else {
             binding.llCheckoutPlaceOrder.visibility = View.GONE
         }

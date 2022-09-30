@@ -93,13 +93,17 @@
     <string name="err_msg_enter_available_shoesizes">Please enter the available shoe sizes.</string>
     <string name="err_msg_enter_available_sizes">Please enter available sizes.</string>
     <string name="err_msg_enter_available_shirtsizes">Please enter the available shirt sizes.</string>
+    <string name="err_msg_enter_salesprice">Please enter sales price.</string>
+    <string name="err_msg_no_running_sales">No ongoing sales on this product.</string>
 
     <string name="product_uploaded_success_message">Your product is uploaded successfully.</string>
     <string name="no_products_added_yet">No products added yet!</string>
     <string name="no_dashboard_item_found">No items found!</string>
 
+    <string name="something_went_wrong">Something went wrong. \n Please check your internet connection and try again.</string>
     <string name="product_delete_success_message">Your product is deleted successfully.</string>
     <string name="delete_dialog_title">Delete</string>
+    <string name="welcome">Welcome to Dave Express. \n Happy Shopping!</string>
     <string name="delete_dialog_message">Are you sure you want to delete the product?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -123,13 +127,19 @@
 
 
     <string name="success_message_item_added_to_cart">Product is added to your cart.</string>
+    <string name="success_salesprice">Updated successfully.</string>
+    <string name="success_saleremove">Sales has been stopped.</string>
+    <string name="success_percentageOff">Percentage off has been calculated successfully.</string>
+
 
     <!--TODO Step 2: Add the string resources to the strings.xml file-->
     <!--START-->
     <string name="btn_lbl_go_to_cart">GO TO CART</string>
     <string name="btn_lbl_submit_saleprice">SUBMIT SALE PRICE</string>
+    <string name="btn_lbl_stopsales">STOP SALES</string>
     <!--END-->
 
+    <string name="btn_update_orderstatus">UPDATE</string>
     <string name="title_my_cart">MY CART</string>
     <string name="no_cart_item_found">No item found in cart!</string>
     <string name="lbl_subtotal">Subtotal</string>
@@ -211,4 +221,7 @@
     </string>
     <string name="daveexpress_mission">Dave Express aims at providing quality products to people at the most affordable Prices. We deliver all products on time in the best conditions with 24 hour support to attend to any queries.</string>
     <string name="isanadmin">Admin</string>
+    <string name="on_sale">ON SALE</string>
+    <string name="on_sale_now">ON SALE NOW</string>
+    <string name="select_order_status">Select Order Status</string>
 </resources>

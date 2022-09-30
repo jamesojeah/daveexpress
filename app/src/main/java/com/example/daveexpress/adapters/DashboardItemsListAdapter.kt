@@ -2,6 +2,7 @@ package com.example.daveexpress.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,9 +58,24 @@ class DashboardItemsListAdapter(
             holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_title).text = model.title
             holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_price).text =
                 "₦${model.price}"
+
+            if (model.sale_status == Constants.YES){
+                holder.itemView.findViewById<TextView>(R.id.tv_on_sale).visibility = View.VISIBLE
+                holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_sale_price).visibility = View.VISIBLE
+                holder.itemView.findViewById<TextView>(R.id.tv_percent_off).visibility = View.VISIBLE
+                holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_price).paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+            } else{
+                holder.itemView.findViewById<TextView>(R.id.tv_on_sale).visibility = View.GONE
+                holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_sale_price).visibility = View.GONE
+                holder.itemView.findViewById<TextView>(R.id.tv_percent_off).visibility = View.GONE
+            }
+
+            holder.itemView.findViewById<TextView>(R.id.tv_dashboard_item_sale_price).text = "₦${model.sale_price}"
+            holder.itemView.findViewById<TextView>(R.id.tv_percent_off).text = "${model.percentage_off}% OFF"
+
             holder.itemView.setOnClickListener {
                 val intent = Intent(context, ProductDetailsActivity::class.java)
-                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.product_id)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.productId)
                 intent.putExtra(Constants.EXTRA_PRODUCT_OWNER_ID, model.user_id)
                 context.startActivity(intent)
             }

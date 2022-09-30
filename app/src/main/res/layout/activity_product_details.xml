@@ -55,6 +55,21 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <com.example.daveexpress.utils.MSPTextView
+                android:id="@+id/tv_on_sale_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/app_gradient_color_background"
+                android:text="@string/on_sale_now"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/address_details_textSize"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/ll_product_details_title_price"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_product_detail_image"
+                tools:text="@string/on_sale_now" />
+
             <LinearLayout
                 android:id="@+id/ll_product_details_title_price"
                 android:layout_width="match_parent"
@@ -75,13 +90,44 @@
                     android:textSize="@dimen/product_details_title_textSize"
                     tools:text="Product Title" />
 
+            <LinearLayout
+                android:id="@+id/ll_product_details_prices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
                 <com.example.daveexpress.utils.MSPTextView
                     android:id="@+id/tv_product_details_price"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/item_value_text_color"
                     android:textSize="@dimen/product_details_price_textSize"
                     tools:text="₦100" />
+
+                <com.example.daveexpress.utils.MSPTextView
+                    android:id="@+id/tv_product_details_sale_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+
+                    android:textColor="@color/item_value_text_color"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="₦100.00" />
+
+                <com.example.daveexpress.utils.MSPTextView
+                    android:id="@+id/tv_product_details_percent_off"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    tools:text="20% OFF" />
+
+            </LinearLayout>
+
             </LinearLayout>
 
             <com.example.daveexpress.utils.MSPTextViewBold
@@ -333,7 +379,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@color/colorSecondaryText"
-                    android:inputType="number"
+                    android:inputType="text"
                     android:textSize="@dimen/product_details_description_textSize"
                     android:textColorHint="@color/colorSecondaryText"
                     android:hint="@string/sales_price_instruction"
@@ -362,6 +408,29 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_sales"
+                tools:visibility="visible" />
+
+            <com.example.daveexpress.utils.MSPButton
+                android:id="@+id/btn_stopsales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/button_background"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:paddingTop="@dimen/btn_padding"
+                android:paddingBottom="@dimen/btn_padding"
+                android:text="@string/btn_lbl_stopsales"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/btn_textSize"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btn_submit_saleprice"
                 tools:visibility="visible" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

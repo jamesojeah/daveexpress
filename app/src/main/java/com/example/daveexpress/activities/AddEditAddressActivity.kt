@@ -14,6 +14,7 @@ class AddEditAddressActivity : BaseActivity() {
     private lateinit var binding: ActivityAddEditAddressBinding
     private var mAddressDetails: Address? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddEditAddressBinding.inflate(layoutInflater)

@@ -37,8 +37,10 @@ class DashboardActivity : BaseActivity() {
                 R.drawable.app_gradient_color_background
             )
         )
+
          navView = binding.navView
-                FirestoreClass().getUserDetails(this@DashboardActivity)
+
+        FirestoreClass().getUserDetails(this@DashboardActivity)
 
 
 

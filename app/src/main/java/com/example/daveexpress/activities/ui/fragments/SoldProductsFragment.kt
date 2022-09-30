@@ -26,14 +26,16 @@ class SoldProductsFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sold_products, container, false)
+
+        _binding = FragmentSoldProductsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        return root
     }
 
-    // TODO Step 5: Override the onResume function and call the function to get the list of sold products.
-    override fun onResume() {
-        super.onResume()
-
-        getSoldProductsList()
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     // TODO Step 4: Create a function to get the list of sold products.
@@ -46,6 +48,7 @@ class SoldProductsFragment : BaseFragment() {
         FirestoreClass().getSoldProductsList(this@SoldProductsFragment)
     }
 
+
     //Create a function to get the success result list of sold products.
 
     fun successSoldProductsList(soldProductsList: ArrayList<SoldProduct>) {
@@ -56,20 +59,27 @@ class SoldProductsFragment : BaseFragment() {
         // TODO Step 7: Populate the list in the RecyclerView using the adapter class.
         // START
         if (soldProductsList.size > 0) {
-           _binding?.rvSoldProductItems?.visibility = View.VISIBLE
-          _binding?.tvNoSoldProductsFound?.visibility  = View.GONE
+           binding.rvSoldProductItems.visibility = View.VISIBLE
+          binding.tvNoSoldProductsFound.visibility  = View.GONE
 
-           _binding?.rvSoldProductItems?.layoutManager = LinearLayoutManager(activity)
-          _binding?.rvSoldProductItems?.setHasFixedSize(true)
+           binding.rvSoldProductItems.layoutManager = LinearLayoutManager(activity)
+          binding.rvSoldProductItems.setHasFixedSize(true)
 
             val soldProductsListAdapter =
                 SoldProductsListAdapter(requireActivity(), soldProductsList)
-           _binding?.rvSoldProductItems?.adapter = soldProductsListAdapter
+           binding.rvSoldProductItems.adapter = soldProductsListAdapter
         } else {
-           _binding?.rvSoldProductItems?.visibility = View.GONE
-           _binding?.tvNoSoldProductsFound?.visibility = View.VISIBLE
+           binding.rvSoldProductItems.visibility = View.GONE
+           binding.tvNoSoldProductsFound.visibility = View.VISIBLE
         }
         // END
+    }
+
+    // TODO Step 5: Override the onResume function and call the function to get the list of sold products.
+    override fun onResume() {
+        super.onResume()
+
+        getSoldProductsList()
     }
     // END
 }

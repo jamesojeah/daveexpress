@@ -101,10 +101,10 @@
             android:paddingTop="@dimen/item_address_type_paddingTopBottom"
             android:paddingEnd="@dimen/item_address_type_paddingStartEnd"
             android:paddingBottom="@dimen/item_address_type_paddingTopBottom"
+            android:text="@string/isanadmin"
             android:textColor="@color/colorWhite"
             android:textSize="@dimen/address_details_textSize"
             android:textStyle="bold"
-            android:text="@string/isanadmin"
             tools:text="@string/isanadmin" />
 
         <com.example.daveexpress.utils.MSPTextViewBold

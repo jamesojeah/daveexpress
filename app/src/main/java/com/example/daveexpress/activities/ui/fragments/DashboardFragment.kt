@@ -48,6 +48,7 @@ lateinit var adapter: DashboardItemsListAdapter
         savedInstanceState: Bundle?
     ): View {
 //        val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
+        adapter = DashboardItemsListAdapter(requireActivity())
 
         _binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -58,10 +59,6 @@ lateinit var adapter: DashboardItemsListAdapter
         binding.tabTrousers.setOnClickListener(this@DashboardFragment)
         binding.tabHoodies.setOnClickListener(this@DashboardFragment)
         binding.tabOthercategories.setOnClickListener(this@DashboardFragment)
-
-
-
-
 
         return root
 
@@ -88,7 +85,7 @@ lateinit var adapter: DashboardItemsListAdapter
 
             override fun onQueryTextChange(filterString: String?): Boolean {
 
-                adapter!!.filter.filter(filterString)
+                adapter.filter.filter(filterString)
                 return true
             }
 
@@ -137,6 +134,7 @@ lateinit var adapter: DashboardItemsListAdapter
      *
      * @param dashboardItemsList
      */
+
     fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>) {
 
         // Hide the progress dialog.
@@ -147,6 +145,7 @@ lateinit var adapter: DashboardItemsListAdapter
 
             binding.rvDashboardItems.visibility = View.VISIBLE
             binding.tvNoDashboardItemsFound.visibility = View.GONE
+
 
             binding.rvDashboardItems.layoutManager = GridLayoutManager(activity, 2)
             binding.rvDashboardItems.setHasFixedSize(true)
@@ -161,7 +160,7 @@ lateinit var adapter: DashboardItemsListAdapter
                     // TODO Step 7: Launch the product details screen from the dashboard.
                     // START
                     val intent = Intent(context, ProductDetailsActivity::class.java)
-                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.product_id)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, product.productId)
                     intent.putExtra(Constants.EXTRA_PRODUCT_OWNER_ID, product.user_id)
                     startActivity(intent)
                     // END

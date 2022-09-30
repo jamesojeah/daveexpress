@@ -18,8 +18,12 @@ class CartListActivity : BaseActivity() {
 
     // A global variable for the product list.
     private lateinit var mProductsList: ArrayList<Product>
+
+//    private var mPrice: Double = 0.0
+
     // A global variable for the cart list items.
     private lateinit var mCartListItems: ArrayList<CartItem>
+
 
     private lateinit var binding: ActivityCartListBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,16 +114,17 @@ class CartListActivity : BaseActivity() {
         // START
         for (product in mProductsList) {
             for (cartItem in cartList) {
-                if (product.product_id == cartItem.product_id) {
+                if (product.productId == cartItem.product_id) {
 
                     cartItem.stock_quantity = product.stock_quantity
 
-                    if (product.stock_quantity.toInt() == 0){
+                    if (product.stock_quantity.toInt() == 0) {
                         cartItem.cart_quantity = product.stock_quantity
                     }
                 }
             }
         }
+
         mCartListItems = cartList
         // TODO Step 6: Now onwards use the global variable of the cart list items as mCartListItems instead of cartList.
         if (mCartListItems.size > 0) {
@@ -135,78 +140,74 @@ class CartListActivity : BaseActivity() {
             binding.rvCartItemsList.adapter = cartListAdapter
 
             var subTotal: Double = 0.0
+            var subTotalSale: Double = 0.0
+            var subTotalNoSale: Double = 0.0
 
             for (item in mCartListItems) {
 
                 // TODO Step 7: Calculate the subtotal based on the stock quantity.
                 // START
-                val availableQuantity = item.stock_quantity.toInt()
 
-                if (availableQuantity > 0) {
+                val availableQuantity = item.stock_quantity.toInt()
+//&& item.sale_status == Constants.NO
+                if (availableQuantity > 0 && item.sale_status == Constants.NO) {
+
                     val price = item.price.toDouble()
+
                     val quantity = item.cart_quantity.toInt()
 
-                    subTotal += (price * quantity)
+
+                    subTotalNoSale += (price * quantity)
+
+                } else if (availableQuantity > 0 && item.sale_status == Constants.YES){
+                    val price = item.sale_price.toDouble()
+
+                    val quantity = item.cart_quantity.toInt()
+
+                    subTotalSale += (price * quantity)
                 }
-            }
-//        if (cartList.size > 0) {
-//
-//            binding.rvCartItemsList.visibility = View.VISIBLE
-//            binding.llCheckout.visibility = View.VISIBLE
-//            binding.tvNoCartItemFound.visibility = View.GONE
-//
-//            binding.rvCartItemsList.layoutManager = LinearLayoutManager(this@CartListActivity)
-//            binding.rvCartItemsList.setHasFixedSize(true)
-//
-//            val cartListAdapter = CartItemsListAdapter(this@CartListActivity, cartList)
-//            binding.rvCartItemsList.adapter = cartListAdapter
-//
-//            var subTotal: Double = 0.0
-//
-//            for (item in cartList) {
-//
-//                val price = item.price.toDouble()
-//                val quantity = item.cart_quantity.toInt()
-//
-//                subTotal += (price * quantity)
 
+                subTotal = subTotalNoSale + subTotalSale
 
-            binding.tvSubTotal.text = "$$subTotal"
-            // Here we have kept Shipping Charge is fixed as $10 but in your case it may cary. Also, it depends on the location and total amount.
-            binding.tvShippingCharge.text = "$10.0" // TODO - Change shipping charge logic
+        }
 
-            if (subTotal > 0) {
-                binding.llCheckout.visibility = View.VISIBLE
+                binding.tvSubTotal.text = "₦$subTotal"
+                // Here we have kept Shipping Charge is fixed as $10 but in your case it may cary. Also, it depends on the location and total amount.
+                binding.tvShippingCharge.text = "₦10.0" // TODO - Change shipping charge logic
 
-                val total = subTotal + 10 // TODO - Change Logic here
-                binding.tvTotalAmount.text = "$$total"
+                if (subTotal > 0) {
+                    binding.llCheckout.visibility = View.VISIBLE
+
+                    val total = subTotal + 10 // TODO - Change Logic here
+                    binding.tvTotalAmount.text = "₦$total"
+                } else {
+                    binding.llCheckout.visibility = View.GONE
+                }
+
             } else {
+                binding.rvCartItemsList.visibility = View.GONE
                 binding.llCheckout.visibility = View.GONE
+                binding.tvNoCartItemFound.visibility = View.VISIBLE
             }
 
-        } else {
-            binding.rvCartItemsList.visibility = View.GONE
-            binding.llCheckout.visibility = View.GONE
-            binding.tvNoCartItemFound.visibility = View.VISIBLE
         }
 
+        // TODO Step 5: Create a function to notify the user about the item removed from the cart list.
+        // START
+        /**
+         * A function to notify the user about the item removed from the cart list.
+         */
+        fun itemRemovedSuccess() {
+
+            hideProgressDialog()
+
+            Toast.makeText(
+                this@CartListActivity,
+                resources.getString(R.string.msg_item_removed_successfully),
+                Toast.LENGTH_SHORT
+            ).show()
+
+            getCartItemsList()
         }
+}
 
-    // TODO Step 5: Create a function to notify the user about the item removed from the cart list.
-    // START
-    /**
-     * A function to notify the user about the item removed from the cart list.
-     */
-    fun itemRemovedSuccess() {
-
-        hideProgressDialog()
-
-        Toast.makeText(
-            this@CartListActivity,
-            resources.getString(R.string.msg_item_removed_successfully),
-            Toast.LENGTH_SHORT
-        ).show()
-
-        getCartItemsList()
-    }
-    }

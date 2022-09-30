@@ -46,10 +46,17 @@ class CartItemsListAdapter(private val context: Context,
             GlideLoader(context).loadProductPicture(model.image, holder.itemView.
                                                     findViewById(R.id.iv_cart_item_image))
 
-            holder.itemView.findViewById<TextView>(R.id.tv_cart_item_title).text = model.title
-            holder.itemView.findViewById<TextView>(R.id.tv_cart_item_price).text = "₦${model.price}"
-            holder.itemView.findViewById<TextView>(R.id.tv_cart_quantity).text = model.cart_quantity
-            holder.itemView.findViewById<TextView>(R.id.tv_cart_item_size).text = model.chosen_size
+            if (model.sale_status == Constants.YES){
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_title).text = model.title
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_price).text = "₦${model.sale_price}"
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_quantity).text = model.cart_quantity
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_size).text = model.chosen_size
+            }else{
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_title).text = model.title
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_price).text = "₦${model.price}"
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_quantity).text = model.cart_quantity
+                holder.itemView.findViewById<TextView>(R.id.tv_cart_item_size).text = model.chosen_size
+            }
 
 
             // TODO Step 1: Show the text Out of Stock when cart quantity is zero.

@@ -7,6 +7,8 @@ import android.text.TextUtils
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Button
+import androidx.appcompat.app.AlertDialog
 import com.example.daveexpress.R
 import com.example.daveexpress.models.User
 import com.example.daveexpress.databinding.ActivityLoginBinding
@@ -128,6 +130,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         } else {
             // Redirect the user to Main Screen after log in.
             startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
+
+            val view = View.inflate(this@LoginActivity, R.layout.dialog_info, null)
+            val builder = AlertDialog.Builder(this@LoginActivity)
+            builder.setView(view)
+            val dialog = builder.create()
+            dialog.show()
+            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+            view.findViewById<Button>(R.id.btn_dialoginfoclose).setOnClickListener {
+                dialog.dismiss()
+            }
         }
         finish()
     }

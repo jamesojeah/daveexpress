@@ -25,6 +25,9 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
     private var mSelectedImageFileURI: Uri? = null
     private var mProductImageURL: String = ""
     private var availableSizes : String = ""
+    private var mSalesPrice: String = ""
+    private var mPercentageOff: String = ""
+    private var mProductId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +72,12 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         ActivityResultCallback {
             mSelectedImageFileURI = it
             try{
-                GlideLoader(this).loadUserPicture(mSelectedImageFileURI!!, binding.ivProductImage)
+                if (mSelectedImageFileURI != null){
+                    GlideLoader(this).loadUserPicture(mSelectedImageFileURI!!, binding.ivProductImage)
+                } else{
+
+                }
+
             }catch (e: IOException){
                 e.printStackTrace()
             }
@@ -189,7 +197,12 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
             categoryType,
             mProductImageURL,
            availableSizes,
-            System.currentTimeMillis()
+            System.currentTimeMillis(),
+            mProductId,
+            mSalesPrice,
+            mPercentageOff,
+            Constants.NO
+
         )
 
         FirestoreClass().uploadProductDetails(this, product)

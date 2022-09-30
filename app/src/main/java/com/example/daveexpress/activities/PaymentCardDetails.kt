@@ -31,7 +31,11 @@ class PaymentCardDetails : BaseActivity() {
     private lateinit var mProductsList: ArrayList<Product>
     private  lateinit var mCartItemsList: ArrayList<CartItem>
     private var mSubTotal: Double = 0.0
+    private var mSubTotalSale: Double = 0.0
+    private var mSubTotalNosale: Double = 0.0
+
     private var mTotalAmount: Double = 0.0
+    private var mOrderStatus: String = "Pending"
     private lateinit var mOrderDetails: Order
 
     private var card_number: TextView? = null
@@ -168,7 +172,7 @@ class PaymentCardDetails : BaseActivity() {
          // Update the stock quantity in the cart list from the product list.
          for (product in mProductsList) {
              for (cartItem in cartList) {
-                 if (product.product_id == cartItem.product_id) {
+                 if (product.productId == cartItem.product_id) {
                      cartItem.stock_quantity = product.stock_quantity
                  }
              }
@@ -183,12 +187,19 @@ class PaymentCardDetails : BaseActivity() {
 
              val availableQuantity = item.stock_quantity.toInt()
 
-             if (availableQuantity > 0) {
+             if (availableQuantity > 0 && item.sale_status == Constants.NO) {
                  val price = item.price.toDouble()
                  val quantity = item.cart_quantity.toInt()
 
-                 mSubTotal += (price * quantity)
+                 mSubTotalNosale += (price * quantity)
+             } else if (availableQuantity > 0 && item.sale_status == Constants.YES){
+                 val price = item.sale_price.toDouble()
+                 val quantity = item.cart_quantity.toInt()
+
+                 mSubTotalSale += (price * quantity)
              }
+
+             mSubTotal = mSubTotalNosale + mSubTotalSale
          }
 
 
@@ -206,17 +217,25 @@ class PaymentCardDetails : BaseActivity() {
          // TODO Step 9: Calculate the subtotal and Total Amount.
          // START
          var subTotal: Double = 0.0
+         var subTotalSale: Double = 0.0
+         var subTotalNoSale: Double = 0.0
 
          for (item in mCartItemsList) {
 
              val availableQuantity = item.stock_quantity.toInt()
 
-             if (availableQuantity > 0) {
+             if (availableQuantity > 0 && item.sale_status == Constants.NO) {
                  val price = item.price.toDouble()
                  val quantity = item.cart_quantity.toInt()
 
-                 subTotal += (price * quantity)
+                 subTotalNoSale += (price * quantity)
+             } else if(availableQuantity > 0 && item.sale_status == Constants.YES){
+                 val price = item.sale_price.toDouble()
+                 val quantity = item.cart_quantity.toInt()
+
+                 subTotalSale += (price * quantity)
              }
+             subTotal = subTotalNoSale + subTotalSale
          }
 
 //        binding.tvCheckoutSubTotal.text = "$$subTotal"
@@ -255,7 +274,9 @@ class PaymentCardDetails : BaseActivity() {
                 mSubTotal.toString(),
                 "10.0", // The Shipping Charge is fixed as $10 for now in our case.
                 mTotalAmount.toString(),
-                System.currentTimeMillis()
+                System.currentTimeMillis(),
+                ordered_size = "",
+                mOrderStatus
             )
 
             // TODO Step 10: Call the function to place the order in the cloud firestore.

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_dashboard_activity"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize"
+    android:background="@drawable/app_gradient_color_background"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_scrollFlags="scroll|enterAlways"
+    app:layout_constraintTop_toTopOf="parent">
+
+    <com.example.daveexpress.utils.MSPTextViewBold
+        android:id="@+id/dashboard_title"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:paddingStart="@dimen/toolbar_title_paddingStart"
+        android:paddingEnd="0dp"
+        android:text="Welcome"
+        android:textColor="@color/colorPrimaryText"
+        android:textSize="@dimen/toolbar_title_text_size" />
+
+</androidx.appcompat.widget.Toolbar>

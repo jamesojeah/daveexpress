@@ -165,7 +165,7 @@
                     android:orientation="vertical">
 
                     <com.example.daveexpress.utils.MSPTextViewBold
-                        android:id="@+id/tv_product_item_name"
+                        android:id="@+id/tv_sold_product_item_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textColor="@color/item_value_text_color"
@@ -173,7 +173,7 @@
                         tools:text="Name" />
 
                     <com.example.daveexpress.utils.MSPTextView
-                        android:id="@+id/tv_product_item_price"
+                        android:id="@+id/tv_sold_product_item_price"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/rv_item_price_marginTop"
@@ -181,6 +181,16 @@
                         android:textSize="@dimen/sold_details_value_textSize"
                         android:textStyle="bold"
                         tools:text="$100.00" />
+
+                    <com.example.daveexpress.utils.MSPTextView
+                        android:id="@+id/tv_sold_product_item_size"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/rv_item_price_marginTop"
+                        android:textColor="@color/item_value_text_color"
+                        android:textSize="@dimen/sold_details_value_textSize"
+                        android:textStyle="bold"
+                        tools:text="Size" />
                 </LinearLayout>
 
                 <com.example.daveexpress.utils.MSPTextView

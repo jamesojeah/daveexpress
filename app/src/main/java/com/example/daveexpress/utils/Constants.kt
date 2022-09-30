@@ -54,6 +54,21 @@ object Constants {
 
     const val ORDERS: String = "orders"
 
+    const val ORDER_STATUS: String = "order_status"
+
+    const val SALES_PRICE: String = "sale_price"
+    const val PERCENTAGE_OFF: String = "percentage_off"
+
+    const val SALE_STATUS: String = "sale_status"
+    const val YES: String = "yes"
+    const val NO: String = "no"
+
+    const val PENDING: String = "Pending"
+    const val IN_PROCESS: String = "In Process"
+    const val DELIVERED: String = "Delivered"
+
+    const val ONESIGNAL_APP_ID = "db181adb-d09a-48d0-8ad1-484bf1d49fd2"
+
     const val STOCK_QUANTITY: String = "stock_quantity"
     const val EXTRA_SOLD_PRODUCT_DETAILS: String = "extra_sold_product_details"
     const val EXTRA_MY_ORDER_DETAILS: String = "extra_MY_ORDER_DETAILS"

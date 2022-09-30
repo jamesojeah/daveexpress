@@ -75,10 +75,10 @@ class SoldProductDetailsActivity : BaseActivity() {
             productDetails.image,
             binding.ivProductItemImage
         )
-      binding.tvProductItemName.text = productDetails.title
-        binding.tvProductItemName.text ="$${productDetails.price}"
+      binding.tvSoldProductItemName.text = productDetails.title
+        binding.tvSoldProductItemPrice.text ="₦${productDetails.price}"
         binding.tvSoldProductQuantity.text = productDetails.sold_quantity
-
+        binding.tvSoldProductItemSize.text = productDetails.sold_size
         binding.tvSoldDetailsAddressType.text = productDetails.address.type
         binding.tvSoldDetailsFullName.text = productDetails.address.name
         binding.tvSoldDetailsAddress.text =

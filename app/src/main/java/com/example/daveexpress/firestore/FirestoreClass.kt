@@ -65,6 +65,47 @@ class FirestoreClass {
         return currentUserID
     }
 
+    fun getUserDetailsFragment(fragment: Fragment){
+        // Here we pass the collection name from which we wants the data.
+        mFireStore.collection(Constants.USERS)
+            // The document id to get the Fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(fragment.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val user = document.toObject(User::class.java)!!
+
+                // TODO Step 6: Pass the result to the Login Activity.
+                // START
+                when (fragment) {
+                    is OrdersFragment -> {
+                        // Call a function of base activity for transferring the result to it.
+                        if (user != null) {
+                            fragment.adminSuccess(user)
+                        }
+                    }
+                    // END
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error. And print the error in log.
+                when (fragment) {
+                    is OrdersFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+
+                Log.e(
+                    fragment.javaClass.simpleName,
+                    "Error while getting user details.",
+                    e
+                )
+            }
+    }
+
     /**
      * A function to get the logged user details from from FireStore Database.
      */
@@ -111,8 +152,13 @@ class FirestoreClass {
                             activity.userDetailsSuccess(user)
                         }
                     }
-                    is DashboardActivity ->{
-                        if (user != null){
+                    is DashboardActivity -> {
+                        if (user != null) {
+                            activity.adminSuccess(user)
+                        }
+                    }
+                    is MyOrderDetailsActivity ->{
+                        if (user != null) {
                             activity.adminSuccess(user)
                         }
                     }
@@ -256,31 +302,29 @@ class FirestoreClass {
             }
     }
 
-    fun getProductsList(fragment: Fragment) {
-        mFireStore.collection(Constants.PRODUCTS)
-            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
-            .orderBy("product_datetime", Query.Direction.DESCENDING)
-            .get()
-            .addOnSuccessListener { document ->
-                Log.e("Products List", document.documents.toString())
-                val productsList: ArrayList<Product> = ArrayList()
-                // A for loop as per the list of documents to convert them into Products ArrayList.
-                for (i in document.documents) {
-
-                    val product = i.toObject(Product::class.java)
-                    product!!.product_id = i.id
-
-                    productsList.add(product)
-                }
-                when (fragment) {
-                    is ProductsFragment -> {
-                        fragment.successProductsListFromFireStore(productsList)
-                    }
-                }
-            }
-
-
-    }
+//    fun getProductsList(fragment: Fragment) {
+//        mFireStore.collection(Constants.PRODUCTS)
+//            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+//            .orderBy("product_datetime", Query.Direction.DESCENDING)
+//            .get()
+//            .addOnSuccessListener { document ->
+//                Log.e("Products List", document.documents.toString())
+//                val productsList: ArrayList<Product> = ArrayList()
+//                // A for loop as per the list of documents to convert them into Products ArrayList.
+//                for (i in document.documents) {
+//
+//                    val product = i.toObject(Product::class.java)
+//                    product!!.productId = i.id
+//
+//                    productsList.add(product)
+//                }
+//                when (fragment) {
+//                    is ProductsFragment -> {
+//                        fragment.successProductsListFromFireStore(productsList)
+//                    }
+//                }
+//            }
+//    }
 
     fun getShoeItemsList(fragment: DashboardFragment){
         mFireStore.collection(Constants.PRODUCTS)
@@ -292,7 +336,7 @@ class FirestoreClass {
                 val shoesList: ArrayList<Product> = ArrayList()
                 for (i in document.documents){
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     shoesList.add(product)
                 }
                 // Pass the success result to the base fragment.
@@ -310,7 +354,7 @@ class FirestoreClass {
                 val shirtsList: ArrayList<Product> = ArrayList()
                 for (i in document.documents){
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     shirtsList.add(product)
                 }
                 // Pass the success result to the base fragment.
@@ -328,7 +372,7 @@ class FirestoreClass {
                 val trousersList: ArrayList<Product> = ArrayList()
                 for (i in document.documents){
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     trousersList.add(product)
                 }
                 // Pass the success result to the base fragment.
@@ -346,7 +390,7 @@ class FirestoreClass {
                 val hoodiesList: ArrayList<Product> = ArrayList()
                 for (i in document.documents){
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     hoodiesList.add(product)
                 }
                 // Pass the success result to the base fragment.
@@ -364,7 +408,7 @@ class FirestoreClass {
                 val otherCategoryList: ArrayList<Product> = ArrayList()
                 for (i in document.documents){
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     otherCategoryList.add(product)
                 }
                 // Pass the success result to the base fragment.
@@ -388,7 +432,7 @@ class FirestoreClass {
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
                     val product = i.toObject(Product::class.java)!!
-                    product.product_id = i.id
+                    product.productId = i.id
                     productsList.add(product)
                 }
 
@@ -476,7 +520,7 @@ class FirestoreClass {
                 for (i in document.documents) {
 
                     val product = i.toObject(Product::class.java)
-                    product!!.product_id = i.id
+                    product!!.productId = i.id
 
                     productsList.add(product)
                 }
@@ -918,7 +962,8 @@ class FirestoreClass {
                 order.sub_total_amount,
                 order.shipping_charge,
                 order.total_amount,
-                order.address
+                order.address,
+                order.ordered_size
             )
             val documentReference = mFireStore.collection(Constants.SOLD_PRODUCTS)
                 .document(cartItem.product_id)
@@ -980,41 +1025,176 @@ class FirestoreClass {
             }
         }
     }
-        // TODO Step 5: Create a function to get the list of orders from cloud firestore.
-        // START
-        /**
-         * A function to get the list of orders from cloud firestore.
-         */
-        fun getMyOrdersList(fragment: OrdersFragment) {
-            mFireStore.collection(Constants.ORDERS)
-                .orderBy("order_datetime", Query.Direction.DESCENDING)
-                .whereEqualTo(Constants.USER_ID, getCurrentUserID())
-                .get() // Will get the documents snapshots.
-                .addOnSuccessListener { document ->
-                    Log.e(fragment.javaClass.simpleName, document.documents.toString())
-                    val list: ArrayList<Order> = ArrayList()
 
-                    for (i in document.documents) {
+    fun updateOrderStatus(activity: Activity, orderId: String, statusHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.ORDERS)
 
-                        val orderItem = i.toObject(Order::class.java)!!
-                        orderItem.id = i.id
+            .document(orderId)
+            .update(statusHashMap)
+            .addOnSuccessListener {
 
-                        list.add(orderItem)
+                when (activity) {
+                    is MyOrderDetailsActivity -> {
+                        activity.statusUpdateSuccess()
+                        Log.d("Order Status update success", "Order Status update success")
+                        // END
                     }
 
-                    // TODO Step 7: Notify the success result to base class.
-                    // START
-                    fragment.populateOrdersListInUI(list)
-                    // END
                 }
-                .addOnFailureListener { e ->
-                    // Here call a function of base activity for transferring the result to it.
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the status.",
+                    e
+                )
+            }
+    }
 
-                    fragment.hideProgressDialog()
+    fun addSalesPrice(activity: Activity, productsalesId: String, salesHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.PRODUCTS)
 
-                    Log.e(fragment.javaClass.simpleName, "Error while getting the orders list.", e)
+            .document(productsalesId)
+            .update(salesHashMap)
+            .addOnSuccessListener {
+
+                when (activity) {
+                    is ProductDetailsActivity -> {
+                        activity.salesPriceUpdateSuccess()
+                        Log.d("Sales price uploaded successfully", "Sales price uploaded successfully")
+                        // END
+                    }
                 }
-        }
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the sales price.",
+                    e
+                )
+            }
+    }
+
+    fun displayPercentageOff(activity: Activity, percentId: String, percentageHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(percentId)
+            .update(percentageHashMap)
+            .addOnSuccessListener {
+
+                when (activity) {
+                    is ProductDetailsActivity -> {
+                        activity.percentageOffSuccess()
+                        Log.d("Percentage off uploaded successfully", "Percentage off uploaded successfully")
+                        // END
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the sales price.",
+                    e
+                )
+            }
+    }
+
+    fun saleStatus(activity: Activity, saleStatusId: String, saleStatusHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.PRODUCTS)
+            .document(saleStatusId)
+            .update(saleStatusHashMap)
+            .addOnSuccessListener {
+
+                when (activity) {
+                    is ProductDetailsActivity -> {
+                        activity.saleStatusSuccess()
+                        Log.d("Sale status updated successfully", "Sale status updated successfully")
+                        // END
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the sales status.",
+                    e
+                )
+            }
+    }
+
+    //A function to get ALL the list of orders from cloud firestore.
+//    fun getAllOrdersList(fragment: Fragment){
+//        mFireStore.collection(Constants.ORDERS)
+//            .orderBy("order_datetime", Query.Direction.DESCENDING)
+//            .get() // Will get the documents snapshots.
+//            .addOnSuccessListener { document ->
+//                Log.e(fragment.javaClass.simpleName, document.documents.toString())
+//                val list: ArrayList<Order> = ArrayList()
+//
+//                for (i in document.documents) {
+//
+//                    val allOrdersItem = i.toObject(Order::class.java)!!
+//                    allOrdersItem.id = i.id
+//
+//                    list.add(allOrdersItem)
+//                }
+//
+//                // TODO Step 7: Notify the success result to base class.
+//                // START
+//                when(fragment) {
+//                    is OrdersFragment ->{
+//                        fragment.populateAllOrdersListInUI(list)
+//                    }
+//            }
+//
+//                // END
+//            }
+//            .addOnFailureListener { e ->
+//                // Here call a function of base activity for transferring the result to it.
+//                when(fragment) {
+//                    is OrdersFragment ->{
+//                        fragment.hideProgressDialog()
+//
+//                        Log.e(fragment.javaClass.simpleName, "Error while getting the orders list.", e)
+//                    }
+//                }
+//            }
+//    }
+
+        // TODO Step 5: Create a function to get the list of orders from cloud firestore.
+        // START
+//        /**
+//         * A function to get the list of orders from cloud firestore.
+//         */
+//        fun getMyOrdersList(fragment: OrdersFragment) {
+//            mFireStore.collection(Constants.ORDERS)
+//                .orderBy("order_datetime", Query.Direction.DESCENDING)
+//                .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+//                .get() // Will get the documents snapshots.
+//                .addOnSuccessListener { document ->
+//                    Log.e(fragment.javaClass.simpleName, document.documents.toString())
+//                    val list: ArrayList<Order> = ArrayList()
+//
+//                    for (i in document.documents) {
+//
+//                        val orderItem = i.toObject(Order::class.java)!!
+//                        orderItem.id = i.id
+//
+//                        list.add(orderItem)
+//                    }
+//
+//                    // TODO Step 7: Notify the success result to base class.
+//                    // START
+//                    fragment.populateOrdersListInUI(list)
+//                    // END
+//                }
+//                .addOnFailureListener { e ->
+//                    // Here call a function of base activity for transferring the result to it.
+//
+//                    fragment.hideProgressDialog()
+//
+//                    Log.e(fragment.javaClass.simpleName, "Error while getting the orders list.", e)
+//                }
+//        }
 
         //A function to get the list of sold products from the cloud firestore.
 
@@ -1022,6 +1202,7 @@ class FirestoreClass {
             // The collection name for SOLD PRODUCTS
             mFireStore.collection(Constants.SOLD_PRODUCTS)
                 .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+                .orderBy("order_datetime", Query.Direction.DESCENDING)
                 .get() // Will get the documents snapshots.
                 .addOnSuccessListener { document ->
                     // Here we get the list of sold products in the form of documents.
