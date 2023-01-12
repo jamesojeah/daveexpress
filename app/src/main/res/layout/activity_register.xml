@@ -119,6 +119,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
+                app:passwordToggleEnabled="true"
+                app:endIconMode="password_toggle"
                 android:hint="@string/et_hint_password"
                 android:textColorHint="@color/colorSecondaryText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -143,6 +145,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
+                app:passwordToggleEnabled="true"
+                app:endIconMode="password_toggle"
                 android:hint="@string/et_hint_confirm_password"
                 android:textColorHint="@color/colorSecondaryText"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -174,6 +178,8 @@
                     android:id="@+id/cb_terms_and_condition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:buttonTint="@color/purple_normal"
+                    android:outlineAmbientShadowColor="@color/black"
                     tools:checked="false" />
 
                 <com.example.daveexpress.utils.MSPTextView

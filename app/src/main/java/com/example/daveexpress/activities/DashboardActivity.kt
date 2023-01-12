@@ -1,6 +1,8 @@
 package com.example.daveexpress.activities
 
 import android.os.Bundle
+import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,6 +11,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.daveexpress.NetworkConnection
 import com.example.daveexpress.R
 //import com.example.daveexpress.activities.databinding.ActivityDashboardBinding
 import com.example.daveexpress.databinding.ActivityDashboardBinding
@@ -29,6 +32,18 @@ class DashboardActivity : BaseActivity() {
 
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val inflateLayout = findViewById<View>(R.id.networkError)
+        val networkConnection = NetworkConnection(applicationContext)
+        networkConnection.observe(this){
+            if (it){
+                Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show()
+                inflateLayout.visibility = View.VISIBLE
+            }else{
+                Toast.makeText(this, "Not Connected", Toast.LENGTH_SHORT).show()
+                inflateLayout.visibility = View.GONE
+            }
+        }
 
 //         Update the background color of the action bar as per our design requirement.
         supportActionBar?.setBackgroundDrawable(

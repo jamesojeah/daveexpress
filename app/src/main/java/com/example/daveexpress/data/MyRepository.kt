@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.daveexpress.activities.ui.fragments.OrdersFragment
+import com.example.daveexpress.models.Cards
 import com.example.daveexpress.models.Order
 import com.example.daveexpress.models.Product
 import com.example.daveexpress.utils.Constants
@@ -17,6 +18,7 @@ class MyRepository {
     private var _prod: MutableLiveData<ArrayList<Product>> = MutableLiveData<ArrayList<Product>>()
     private var _ord: MutableLiveData<ArrayList<Order>> = MutableLiveData<ArrayList<Order>>()
     private var _adminord: MutableLiveData<ArrayList<Order>> = MutableLiveData<ArrayList<Order>>()
+    private var _cards: MutableLiveData<ArrayList<Cards>> = MutableLiveData<ArrayList<Cards>>()
 
     /**
      * A function to get the user id of current logged user.
@@ -33,6 +35,32 @@ class MyRepository {
 
         return currentUserID
     }
+
+    fun getCardsList(){
+        mFireStore.collection(Constants.CARDS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+//            .orderBy("product_datetime", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("Cards List", document.documents.toString())
+                val cardsList: ArrayList<Cards> = ArrayList()
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val cards = i.toObject(Cards::class.java)!!
+                    cards.cardId = i.id
+                    cardsList.add(cards)
+                    _cards.value = cardsList
+                }
+            }
+            .addOnFailureListener {
+                Log.d("Cards were not gotten", "Cards were not retrieved")
+            }
+    }
+
+    internal var allthecards: MutableLiveData<ArrayList<Cards>>
+        get() {return  _cards}
+        set(value) {_cards = value}
 
     fun getProductsList() {
         mFireStore.collection(Constants.PRODUCTS)
@@ -51,9 +79,7 @@ class MyRepository {
                     productsList.add(product)
                   _prod.value = productsList
 //                    ProductsFragment().successProductsListFromFireStore(productsList)
-
                 }
-               
                 }
             .addOnFailureListener {
                 Log.d("Products wasnt gotten", "Products were not retrieved")
@@ -65,6 +91,7 @@ class MyRepository {
     internal var alltheproducts: MutableLiveData<ArrayList<Product>>
     get() {return  _prod}
     set(value) {_prod = value}
+
 
     /**
      * A function to get the list of orders from cloud firestore.

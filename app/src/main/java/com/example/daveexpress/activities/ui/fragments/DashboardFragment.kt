@@ -35,6 +35,7 @@ lateinit var adapter: DashboardItemsListAdapter
         super.onCreate(savedInstanceState)
         // If we want to use the option menu in fragment we need to add it.
         setHasOptionsMenu(true)
+
     }
 
     override fun onResume() {
@@ -47,6 +48,7 @@ lateinit var adapter: DashboardItemsListAdapter
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
 //        val dashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
         adapter = DashboardItemsListAdapter(requireActivity())
 
@@ -151,6 +153,7 @@ lateinit var adapter: DashboardItemsListAdapter
             binding.rvDashboardItems.setHasFixedSize(true)
 
              adapter = DashboardItemsListAdapter(requireActivity())
+
             binding.rvDashboardItems.adapter = adapter
                     adapter.setData(itemsModalList = dashboardItemsList)
             adapter.setOnClickListener(object :

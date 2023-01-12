@@ -296,8 +296,10 @@
 
     <View
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="2dp"
+         />
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -316,4 +318,46 @@
             android:textColor="@android:color/white" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/spacing_large">
+
+        <com.example.daveexpress.utils.MSPButton
+            android:id="@+id/save_card"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/button_background"
+            android:foreground="?attr/selectableItemBackground"
+            android:text="SAVE CARD"
+            android:textAllCaps="false"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:textColor="@color/black"
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/saved_cards_would_appear_here"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_my_cards"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/spacing_large"/>
+
+    <com.example.daveexpress.utils.MSPTextView
+        android:id="@+id/tv_no_cards_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="@string/no_cards_added_yet"
+        android:textAlignment="center"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="@dimen/no_data_found_textSize" />
 </LinearLayout>

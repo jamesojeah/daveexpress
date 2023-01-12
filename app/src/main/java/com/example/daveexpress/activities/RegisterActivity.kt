@@ -121,7 +121,7 @@ class RegisterActivity : BaseActivity() {
 
             val email:String = binding.etEmail.text.toString().trim { it <= ' ' }
             val password: String = binding.etPassword.text.toString().trim { it <= ' ' }
-            // Create an instance and create a register a user with email and password.
+            // Create an instance and register a user with email and password.
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(
                     OnCompleteListener<AuthResult> { task ->

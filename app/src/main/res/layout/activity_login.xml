@@ -55,7 +55,7 @@
         android:layout_marginTop="35dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/et_hint_email_id"
-        android:textColorHint="@color/colorSecondaryText"
+        android:textColorHint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
@@ -64,6 +64,7 @@
             android:id="@+id/et_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
             android:inputType="text"
             android:padding="@dimen/et_padding"
             android:textColor="@color/colorPrimaryText"
@@ -79,16 +80,25 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
+
         android:hint="@string/et_hint_password"
-        android:textColorHint="@color/colorSecondaryText"
+        android:textColorHint="@color/colorPrimary"
+        app:endIconMode="password_toggle"
+        app:endIconTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/til_email">
+        app:layout_constraintTop_toBottomOf="@id/til_email"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/colorAccent">
 
         <com.example.daveexpress.utils.MSPEditText
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:drawableTint="@color/black"
+            android:drawableTintMode="multiply"
+            android:foregroundTint="#151515"
             android:inputType="textPassword"
             android:padding="@dimen/et_padding"
             android:textColor="@color/colorPrimaryText"
@@ -132,6 +142,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_forgot_password" />
 
+    <com.example.daveexpress.utils.MSPButton
+        android:id="@+id/btn_google_signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="30dp"
+      android:drawablePadding="@dimen/appbar_padding_top"
+        android:drawableStart="@drawable/googleicon"
+        android:layout_marginEnd="16dp"
+        android:background="@color/colorWhite"
+        android:foreground="?attr/selectableItemBackground"
+        android:gravity="center"
+        android:paddingTop="@dimen/btn_padding"
+        android:paddingBottom="@dimen/btn_padding"
+        android:text="@string/btn_lbl_googlesignin"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/btn_textSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -140,7 +173,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btn_login">
+        app:layout_constraintTop_toBottomOf="@id/btn_google_signin">
 
         <com.example.daveexpress.utils.MSPTextView
             android:id="@+id/tv_don_t_have_an_account"

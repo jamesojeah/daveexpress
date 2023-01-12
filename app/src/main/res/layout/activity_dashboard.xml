@@ -17,6 +17,15 @@
 <!--            layout="@layout/toolbar"/>-->
 <!--    </com.google.android.material.appbar.AppBarLayout>-->
 
+<include
+    android:id="@+id/networkError"
+    layout="@layout/network_error_layout"
+    android:visibility="gone"
+    android:layout_gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>
+
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"

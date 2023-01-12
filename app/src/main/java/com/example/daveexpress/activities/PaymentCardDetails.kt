@@ -8,22 +8,32 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
 import com.example.daveexpress.R
-import com.example.daveexpress.adapters.CartItemsListAdapter
+import com.example.daveexpress.adapters.CardRecyclerViewAdapter
+import com.example.daveexpress.data.CardDetailsViewModelFactory
+import com.example.daveexpress.data.CardViewModel
+import com.example.daveexpress.data.MyRepository
+import com.example.daveexpress.data.OrderViewModelFactory
 import com.example.daveexpress.databinding.ActivityPaymentCardDetailsBinding
+import com.example.daveexpress.db.CardEntity
 import com.example.daveexpress.firestore.FirestoreClass
-import com.example.daveexpress.models.Address
-import com.example.daveexpress.models.CartItem
-import com.example.daveexpress.models.Order
-import com.example.daveexpress.models.Product
+import com.example.daveexpress.models.*
 import com.example.daveexpress.utils.Constants
 import com.example.daveexpress.utils.Tools
 
 import com.google.android.material.textfield.TextInputEditText
 
-class PaymentCardDetails : BaseActivity() {
+class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListener {
+
+    var mycarddetails : Cards = Cards()
+
+    lateinit var recyclerViewAdapter: CardRecyclerViewAdapter
+    lateinit var viewModel: CardViewModel
 
     private lateinit var binding: ActivityPaymentCardDetailsBinding
 
@@ -83,20 +93,7 @@ class PaymentCardDetails : BaseActivity() {
 
             override fun afterTextChanged(editable: Editable) {}
         })
-//        et_card_number!!.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
-//            override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, count: Int) {
-//                if (charSequence.toString().trim { it <= ' ' }.length == 0) {
-//                    card_number!!.text = "**** **** **** ****"
-//                } else {
-//                    val number: String =
-//                       Tools.insertPeriodically(charSequence.toString().trim { it <= ' ' }, " ", 4)
-//                    card_number!!.text = number
-//                }
-//            }
-//
-//            override fun afterTextChanged(editable: Editable) {}
-//        })
+
         et_expire!!.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, count: Int) {
@@ -137,12 +134,56 @@ class PaymentCardDetails : BaseActivity() {
         })
 //        initToolbar()
 
+
+        binding.rvMyCards.layoutManager = LinearLayoutManager(this@PaymentCardDetails)
+        binding.rvMyCards.setHasFixedSize(true)
+
+         recyclerViewAdapter = CardRecyclerViewAdapter(this@PaymentCardDetails)
+        binding.rvMyCards.adapter = recyclerViewAdapter
+        val divider = DividerItemDecoration(applicationContext, VERTICAL)
+        binding.rvMyCards.addItemDecoration(divider)
+
+
+        getProductList()
+
+//        viewModel = ViewModelProviders.of(this).get(CardViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory = CardDetailsViewModelFactory(repository = MyRepository())).get(CardViewModel::class.java)
+        viewModel.myCards().observe(this, Observer {
+            if (it.size>0){
+                binding.tvNoCardsFound.visibility = View.GONE
+                recyclerViewAdapter.setListData(ArrayList(it))
+                recyclerViewAdapter.notifyDataSetChanged()
+            }else{
+                binding.rvMyCards.visibility = View.GONE
+                binding.tvNoCardsFound.visibility = View.VISIBLE
+            }
+
+        })
+
         binding.paymentProceed.setOnClickListener {
 
-            placeAnOrder()
+//                placeAnOrder()
+//
+//            if (binding.paymentProceed.text.equals("PROCEED")) {
+//                val card = CardEntity(0, name, cardnumber, exp, cvv)
+//                viewModel.insertCardInfo(card)
+//
+//
+//            }else{
+//                val card = CardEntity(binding.etName.getTag(binding.etName.id).toString().toInt(),
+//                    name, cardnumber, exp, cvv)
+//                viewModel.updateCardInfo(card)
+//            }
 
+//            binding.etName.setText("")
+//            binding.etCardNumber.setText("")
+//            binding.etExpire.setText("")
+//            binding.etCvv.setText("")
         }
-        getProductList()
+
+        binding.saveCard.setOnClickListener {
+            savecardtofirestore()
+        }
     }
      fun getProductList() {
 
@@ -321,4 +362,43 @@ class PaymentCardDetails : BaseActivity() {
 
         binding.toolbarCardDetails.setNavigationOnClickListener { onBackPressed() }
     }
+
+    override fun onDeleteUserClickListener(card: Cards) {
+//        viewModel.deleteCardInfo(card)
+        //delete card from firebase
     }
+
+    override fun onItemClickListener(card: Cards) {
+       binding.etName.setText(card.cardname)
+        binding.etCardNumber.setText(card.cardnumber)
+        binding.etExpire.setText(card.expirydate)
+        binding.etCvv.setText(card.cvv)
+    }
+
+
+    private fun savecardtofirestore(){
+
+        val cards = Cards(
+            FirestoreClass().getCurrentUserID(),
+            binding.etCardNumber.text.toString().trim { it <= ' ' },
+            binding.etName.text.toString().trim { it <= ' ' },
+            binding.etCvv.text.toString().trim { it <= ' ' },
+            binding.etExpire.text.toString().trim { it <= ' ' },
+      cardtype = "Visa for now, work on this later",
+            cardId = ""
+
+        )
+
+        FirestoreClass().uploadCards(this, cards)
+    }
+
+    fun cardUploadSuccess(){
+//        hideProgressDialog()
+        Toast.makeText(
+            this@PaymentCardDetails,
+            resources.getString(R.string.cardsave_success_message),
+            Toast.LENGTH_SHORT
+        ).show()
+
+    }
+}

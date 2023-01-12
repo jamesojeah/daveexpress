@@ -150,6 +150,7 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         finish()
     }
 
+
     fun imageUploadSuccess(imageURL: String) {
 //        hideProgressDialog()
         mProductImageURL = imageURL

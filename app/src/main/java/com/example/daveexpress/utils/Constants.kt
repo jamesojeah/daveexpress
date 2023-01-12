@@ -32,6 +32,8 @@ object Constants {
     const val PRODUCT_IMAGE: String = "Product_Image"
     const val PRODUCTS: String = "products"
     const val USER_ID: String = "user_id"
+    const val CARDS: String = "cards"
+
 
     const val SHOES: String = "Shoes"
     const val SHIRTS: String = "Shirts"

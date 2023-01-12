@@ -1,27 +1,54 @@
 package com.example.daveexpress.activities
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.example.daveexpress.R
 import com.example.daveexpress.models.User
 import com.example.daveexpress.databinding.ActivityLoginBinding
 import com.example.daveexpress.firestore.FirestoreClass
 import com.example.daveexpress.utils.Constants
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.GoogleAuthProvider
 
 class LoginActivity : BaseActivity(), View.OnClickListener {
+
+    companion object{
+        private const val RC_SIGN_IN = 120
+    }
+
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var mAuth: FirebaseAuth
+    private lateinit var googleSignInClient: GoogleSignInClient
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestEmail()
+            .build()
+        googleSignInClient = GoogleSignIn.getClient(this, gso)
+
+        //Firebase Auth Instance
+        mAuth = FirebaseAuth.getInstance()
+
 
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
@@ -37,9 +64,86 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             binding.btnLogin.setOnClickListener(this)
             // Click event assigned to Register text.
             binding.tvRegister.setOnClickListener(this)
+            binding.btnGoogleSignin.setOnClickListener(this)
         }
-
     }
+
+
+    private fun signIn(){
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        //Result returned from launching the intent from GoogleSignInApi.getSignInIntent
+        if (requestCode == RC_SIGN_IN){
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            val exception = task.exception
+            if (task.isSuccessful){
+                try {
+                    //Google Signin was successful, authenticate with firebase
+                    val account = task.getResult(ApiException::class.java)!!
+                    Log.d("SigninActivity", "FirebaseAuth with Google" + account.id)
+                    firebaseAuthWithGoogle(account.idToken!!)
+                }catch (e: ApiException){
+                    //Google Signin failed, update UI appropriately
+                    Log.w("SigninActivity", "Google Signin Failed", e)
+                }
+            }else{
+                Log.w("SigninActivity", exception.toString())
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String){
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this){task ->
+                if (task.isSuccessful){
+                    //Signin success, update UI with the signed-in user's information
+//                    val user = mAuth.currentUser
+
+                    // Firebase registered user
+//                    val firebaseUserGoogle: FirebaseUser = task.result!!.user!!
+//
+//                    val user = User(firebaseUserGoogle.uid,
+//                        binding.etFirstName.text.toString().trim{it <= ' '},
+//                        binding.etLastName.text.toString().trim{it <= ' '},
+//                        binding.etEmail.text.toString().trim{it <= ' '}
+//                    )
+
+                    val currentUser = mAuth.currentUser
+                                        val user = User(
+                                            currentUser?.uid.toString(),
+                                            currentUser?.displayName.toString(),
+                                            currentUser?.email.toString()
+
+                                        )
+                    currentUser?.displayName.toString()
+
+                    FirestoreClass().registerUserGoogle(this@LoginActivity, user)
+
+                    val intent = Intent(this, UserProfileActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }else{
+                    //If signin fails, display a mnessage to the user
+                    Log.w("SigninActivity", "signin with credential failure")
+                }
+            }
+    }
+
+    fun userRegistrationSuccessGoogle() {
+
+        Toast.makeText(
+            this@LoginActivity,
+            resources.getString(R.string.register_google_success),
+            Toast.LENGTH_SHORT
+        ).show()
+    }
+
     // In Login screen the clickable components are Login Button, ForgotPassword text and Register Text.
     override fun onClick(v: View?) {
         if (v != null) {
@@ -60,6 +164,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                     // Launch the register screen when the user clicks on the text.
                     val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                     startActivity(intent)
+                }
+
+                R.id.btn_google_signin -> {
+                    signIn()
                 }
             }
         }
@@ -130,17 +238,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         } else {
             // Redirect the user to Main Screen after log in.
             startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
-
-            val view = View.inflate(this@LoginActivity, R.layout.dialog_info, null)
-            val builder = AlertDialog.Builder(this@LoginActivity)
-            builder.setView(view)
-            val dialog = builder.create()
-            dialog.show()
-            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-            view.findViewById<Button>(R.id.btn_dialoginfoclose).setOnClickListener {
-                dialog.dismiss()
-            }
+//
+//            val view = View.inflate(this@LoginActivity, R.layout.dialog_info, null)
+//            val builder = AlertDialog.Builder(this@LoginActivity)
+//            builder.setView(view)
+//            val dialog = builder.create()
+//            dialog.show()
+//            dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+//
+//            view.findViewById<Button>(R.id.btn_dialoginfoclose).setOnClickListener {
+//                dialog.dismiss()
+//            }
         }
         finish()
     }

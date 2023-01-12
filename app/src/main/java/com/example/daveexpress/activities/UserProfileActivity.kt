@@ -18,64 +18,78 @@ import com.example.daveexpress.databinding.ActivityUserProfileBinding
 import com.example.daveexpress.firestore.FirestoreClass
 import com.example.daveexpress.utils.Constants
 import com.example.daveexpress.utils.GlideLoader
+import com.google.firebase.auth.FirebaseAuth
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
     private lateinit var binding: ActivityUserProfileBinding
     // Create a instance of the User model class.
     private lateinit var mUserDetails: User
+    private lateinit var mAuth: FirebaseAuth
     private var mSelectedImageFileUri: Uri? = null
     private var mUserProfileImageURL: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         binding = ActivityUserProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mAuth = FirebaseAuth.getInstance()
 
         // TODO Step 5: Retrieve the User details from intent extra.
         if(intent.hasExtra(Constants.EXTRA_USER_DETAILS)) {
             // Get the user details from intent as a ParcelableExtra.
             mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
-        }
 
-        binding.etFirstName.setText(mUserDetails.firstName)
-        binding.etLastName.setText(mUserDetails.lastName)
-
-        binding.etEmail.isEnabled = false
-        binding.etEmail.setText(mUserDetails.email)
-
-        if (mUserDetails.profileCompleted == 0) {
-            // Update the title of the screen to complete profile.
-            binding.tvTitle.text = resources.getString(R.string.title_complete_profile)
-
-            // Here, the some of the edittext components are disabled because it is added at a time of Registration.
-            binding.etFirstName.isEnabled = false
-
-            binding.etLastName.isEnabled = false
-
-        } else {
-            setupActionBar()
-            binding.tvTitle.text = resources.getString(R.string.title_edit_profile)
-            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, binding.ivUserPhoto)
 
             binding.etFirstName.setText(mUserDetails.firstName)
             binding.etLastName.setText(mUserDetails.lastName)
 
-           binding.etEmail.isEnabled = false
+            binding.etEmail.isEnabled = false
             binding.etEmail.setText(mUserDetails.email)
+            if (mUserDetails.profileCompleted == 0) {
+                // Update the title of the screen to complete profile.
+                binding.tvTitle.text = resources.getString(R.string.title_complete_profile)
 
-            if (mUserDetails.mobile != 0L) {
-                binding.etMobileNumber.setText(mUserDetails.mobile.toString())
-            }
-            if (mUserDetails.gender == Constants.MALE) {
-                binding.rbMale.isChecked = true
+                // Here, the some of the edittext components are disabled because it is added at a time of Registration.
+                binding.etFirstName.isEnabled = false
+
+                binding.etLastName.isEnabled = false
+
             } else {
-                binding.rbFemale.isChecked = true
+                setupActionBar()
+                binding.tvTitle.text = resources.getString(R.string.title_edit_profile)
+                GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, binding.ivUserPhoto)
+
+                binding.etFirstName.setText(mUserDetails.firstName)
+                binding.etLastName.setText(mUserDetails.lastName)
+
+                binding.etEmail.isEnabled = false
+                binding.etEmail.setText(mUserDetails.email)
+
+                if (mUserDetails.mobile != 0L) {
+                    binding.etMobileNumber.setText(mUserDetails.mobile.toString())
+                }
+                if (mUserDetails.gender == Constants.MALE) {
+                    binding.rbMale.isChecked = true
+                } else {
+                    binding.rbFemale.isChecked = true
+                }
             }
+
+        } else{
+
+            val currentUser = mAuth.currentUser
+            binding.etFirstName.setText(currentUser?.displayName)
+            binding.etEmail.isEnabled = false
+            binding.etEmail.setText(currentUser?.email)
         }
+
 
         binding.ivUserPhoto.setOnClickListener(this@UserProfileActivity)
         binding.btnSaveProfile.setOnClickListener(this@UserProfileActivity)
+
+        super.onCreate(savedInstanceState)
+
     }
 
     private fun setupActionBar() {

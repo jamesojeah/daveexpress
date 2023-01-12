@@ -6,6 +6,7 @@
     <string name="et_hint_password">Password</string>
     <string name="lbl_forgot_password">Forgot Password?</string>
     <string name="btn_lbl_login">Login</string>
+    <string name="btn_lbl_googlesignin">SIGN IN WITH GOOGLE</string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="register"><u>Register</u></string>
 
@@ -36,6 +37,7 @@
     <string name="btn_lbl_submit">Submit</string>
     <string name="email_sent_success">\"Email sent successfully to reset your password! \"</string>
     <string name="register_success">You are registered successfully.</string>
+    <string name="register_google_success">Signed in successfully.</string>
 
     <string name="title_complete_profile">COMPLETE PROFILE</string>
     <string name="et_hint_mobile_number">Mobile Number</string>
@@ -97,10 +99,11 @@
     <string name="err_msg_no_running_sales">No ongoing sales on this product.</string>
 
     <string name="product_uploaded_success_message">Your product is uploaded successfully.</string>
+    <string name="cardsave_success_message">Your card has been saved successfully.</string>
     <string name="no_products_added_yet">No products added yet!</string>
     <string name="no_dashboard_item_found">No items found!</string>
 
-    <string name="something_went_wrong">Something went wrong. \n Please check your internet connection and try again.</string>
+    <string name="something_went_wrong">No Connection. \n Please check your internet connection and try again.</string>
     <string name="product_delete_success_message">Your product is deleted successfully.</string>
     <string name="delete_dialog_title">Delete</string>
     <string name="welcome">Welcome to Dave Express. \n Happy Shopping!</string>
@@ -193,6 +196,7 @@
     <string name="lbl_card_payment">Debit or Credit Card</string>
     <string name="btn_lbl_place_order">PLACE ORDER</string>
     <string name="no_orders_placed_yet">No orders placed yet!</string>
+    <string name="no_cards_added_yet">No cards added yet!</string>
 
     <string name="title_my_order_details">MY ORDER DETAILS</string>
     <string name="order_details_lbl">Order Details</string>
@@ -224,4 +228,5 @@
     <string name="on_sale">ON SALE</string>
     <string name="on_sale_now">ON SALE NOW</string>
     <string name="select_order_status">Select Order Status</string>
+    <string name="saved_cards_would_appear_here">Your saved cards would appear here</string>
 </resources>
