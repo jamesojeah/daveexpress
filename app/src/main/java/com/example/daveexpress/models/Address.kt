@@ -13,7 +13,7 @@ data class Address (
         val address: String = "",
         val zipCode: String = "",
         val additionalNote: String = "",
-
+        val state: String ="",
         val type: String = "",
         val otherDetails: String = "",
         var id: String = "",

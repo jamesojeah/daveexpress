@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import com.example.daveexpress.activities.ui.fragments.OrdersFragment
-import com.example.daveexpress.models.Cards
-import com.example.daveexpress.models.Order
-import com.example.daveexpress.models.Product
+import com.example.daveexpress.activities.ui.fragments.SoldProductsFragment
+import com.example.daveexpress.models.*
 import com.example.daveexpress.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -19,7 +18,8 @@ class MyRepository {
     private var _ord: MutableLiveData<ArrayList<Order>> = MutableLiveData<ArrayList<Order>>()
     private var _adminord: MutableLiveData<ArrayList<Order>> = MutableLiveData<ArrayList<Order>>()
     private var _cards: MutableLiveData<ArrayList<Cards>> = MutableLiveData<ArrayList<Cards>>()
-
+    private var _soldproducts: MutableLiveData<ArrayList<SoldProduct>> = MutableLiveData<ArrayList<SoldProduct>>()
+    private var _outofstock: MutableLiveData<ArrayList<OS>> = MutableLiveData<ArrayList<OS>>()
     /**
      * A function to get the user id of current logged user.
      */
@@ -62,6 +62,44 @@ class MyRepository {
         get() {return  _cards}
         set(value) {_cards = value}
 
+    fun getSoldProductsList() {
+
+        // The collection name for SOLD PRODUCTS
+        mFireStore.collection(Constants.SOLD_PRODUCTS)
+            .orderBy("order_date", Query.Direction.DESCENDING)
+//            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+                // Here we get the list of sold products in the form of documents.
+                Log.e("Sold product list", document.documents.toString())
+
+                // Here we have created a new instance for Sold Products ArrayList.
+                val soldProductlist: ArrayList<SoldProduct> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Sold Products ArrayList.
+                for (i in document.documents) {
+
+                    val soldProduct = i.toObject(SoldProduct::class.java)!!
+                    soldProduct.id = i.id
+
+                    soldProductlist.add(soldProduct)
+                    _soldproducts.value = soldProductlist
+
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+             "Sold Product Error",
+                    "Error while getting the list of sold products.",
+                    e
+                )
+            }
+    }
+
+    internal var allthesoldproducts: MutableLiveData<ArrayList<SoldProduct>>
+        get() {return  _soldproducts}
+        set(value) {_soldproducts = value}
+
     fun getProductsList() {
         mFireStore.collection(Constants.PRODUCTS)
             .whereEqualTo(Constants.USER_ID, getCurrentUserID())
@@ -92,6 +130,34 @@ class MyRepository {
     get() {return  _prod}
     set(value) {_prod = value}
 
+
+    fun getOutofStockList() {
+        mFireStore.collection(Constants.PRODUCTS)
+//            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .orderBy("product_datetime", Query.Direction.DESCENDING)
+            .get()
+            .addOnSuccessListener { document ->
+                Log.e("OS List", document.documents.toString())
+                val productsList: ArrayList<Product> = ArrayList()
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val product = i.toObject(Product::class.java)
+                    product!!.productId = i.id
+
+                    productsList.add(product)
+                    _prod.value = productsList
+//                    ProductsFragment().successProductsListFromFireStore(productsList)
+                }
+            }
+            .addOnFailureListener {
+                Log.d("OS wasnt gotten", "Products were not retrieved")
+            }
+    }
+
+    internal var alltheOS: MutableLiveData<ArrayList<OS>>
+        get() {return  _outofstock}
+        set(value) {_outofstock = value}
 
     /**
      * A function to get the list of orders from cloud firestore.

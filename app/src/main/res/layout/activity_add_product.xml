@@ -262,6 +262,19 @@
 
             </RadioGroup>
 
+            <com.example.daveexpress.utils.MSPTextViewBold
+                android:id="@+id/size_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="31dp"
+                android:layout_marginTop="8dp"
+                android:text="Select available sizes"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/et_textSize"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rg_category" />
+
+
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/til_available_shoesizes"
                 style="@style/ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense"
@@ -274,7 +287,7 @@
                 android:textColorHint="@color/colorSecondaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rg_category">
+                app:layout_constraintTop_toBottomOf="@id/shoesize38">
 
                 <com.example.daveexpress.utils.MSPEditText
                     android:id="@+id/et_available_shoesizes"
@@ -299,7 +312,7 @@
                 android:textColorHint="@color/colorSecondaryText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rg_category">
+                app:layout_constraintTop_toBottomOf="@id/shoesize38">
 
                 <com.example.daveexpress.utils.MSPEditText
                     android:id="@+id/et_available_shirtsizes"
@@ -310,6 +323,155 @@
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/et_textSize" />
             </com.google.android.material.textfield.TextInputLayout>
+
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize38"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="38"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize39"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="39"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/shoesize38"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="40"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/shoesize39"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize41"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="41"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/shoesize40"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize42"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="42"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/shoesize41"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/shoesize43"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="43"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/shoesize42"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false"/>
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/sizeM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="M"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/sizeL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="L"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/sizeM"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/sizeXL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="XL"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/sizeL"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/sizeXXL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_marginStart="16dp"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="XXL"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/sizeXL"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/sizeXXXL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:visibility="gone"
+                android:buttonTint="@color/purple_normal"
+                android:outlineAmbientShadowColor="@color/black"
+                android:text="XXXL"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toEndOf="@id/sizeXXL"
+                app:layout_constraintTop_toBottomOf="@+id/size_tv"
+                tools:checked="false" />
 
 
             <com.example.daveexpress.utils.MSPButton

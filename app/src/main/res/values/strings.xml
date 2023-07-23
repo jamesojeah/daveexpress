@@ -80,6 +80,7 @@
     <string name="action_add_product">Add Product</string>
 
     <string name="title_add_product">ADD PRODUCT</string>
+    <string name="title_outofstock">OUT OF STOCK</string>
     <string name="et_hint_product_title">Product Title</string>
     <string name="et_hint_product_price">Product Price (₦)</string>
     <string name="et_hint_product_description">Product Description</string>
@@ -89,6 +90,14 @@
 
     <string name="err_msg_select_product_image">Please select product image.</string>
     <string name="err_msg_enter_product_title">Please enter product title.</string>
+    <string name="err_msg_shipping_lagos">Please enter shipping fee for Lagos.</string>
+    <string name="err_msg_shipping_delta">Please enter shipping fee for Delta.</string>
+    <string name="err_msg_shipping_abuja">Please enter shipping fee for Abuja.</string>
+    <string name="err_msg_shipping_bayelsa">Please enter shipping fee for Bayelsa.</string>
+    <string name="err_msg_shipping_enugu">Please enter shipping fee for Enugu.</string>
+    <string name="err_msg_shipping_edo">Please enter shipping fee for Edo.</string>
+    <string name="err_msg_shipping_anambra">Please enter shipping fee for Anambra.</string>
+    <string name="err_msg_shipping_others">Please enter shipping fee for Others.</string>
     <string name="err_msg_enter_product_price">Please enter product price.</string>
     <string name="err_msg_enter_product_description">Please enter product description.</string>
     <string name="err_msg_enter_product_quantity">Please enter product quantity.</string>
@@ -99,7 +108,10 @@
     <string name="err_msg_no_running_sales">No ongoing sales on this product.</string>
 
     <string name="product_uploaded_success_message">Your product is uploaded successfully.</string>
+    <string name="shippingfee_uploaded_success_message">Shipping fees added successfully.</string>
+    <string name="shippingfee_updated_success_message">Shipping fees updated successfully.</string>
     <string name="cardsave_success_message">Your card has been saved successfully.</string>
+
     <string name="no_products_added_yet">No products added yet!</string>
     <string name="no_dashboard_item_found">No items found!</string>
 
@@ -117,7 +129,9 @@
     <string name="lbl_product_description">Product Description</string>
     <string name="lbl_availablesize_description">Available Sizes</string>
     <string name="lbl_chooseasize">Choose a size</string>
+    <string name="lbl_selectasize">Select a size</string>
     <string name="lbl_sales_heading">Is this product on Sale?</string>
+    <string name="lbl_OS_heading">See products that are running low or out of stock.</string>
     <string name="lbl_sales_price_heading">Enter the sales price for this product</string>
     <string name="size_instruction">Only enter a size that is among the available sizes</string>
     <string name="sales_price_instruction">Sales Price</string>
@@ -138,6 +152,8 @@
     <!--TODO Step 2: Add the string resources to the strings.xml file-->
     <!--START-->
     <string name="btn_lbl_go_to_cart">GO TO CART</string>
+    <string name="btn_lbl_go_to_os">GO TO O/S (OUT OF STOCK)</string>
+
     <string name="btn_lbl_submit_saleprice">SUBMIT SALE PRICE</string>
     <string name="btn_lbl_stopsales">STOP SALES</string>
     <!--END-->
@@ -214,6 +230,7 @@
     <string name="order_status_delivered">Delivered</string>
     <string name="title_sold_products">Sold Products</string>
     <string name="no_products_sold_out_yet">No products sold out yet!</string>
+    <string name="no_OS">No Products are out of stock</string>
     <string name="title_sold_product_details">SOLD PRODUCT DETAILS</string>
     <string name="contact_us">Contact our support team for any complaints or enquiries.</string>
     <string name="goodnews">Goodnews David</string>
@@ -229,4 +246,43 @@
     <string name="on_sale_now">ON SALE NOW</string>
     <string name="select_order_status">Select Order Status</string>
     <string name="saved_cards_would_appear_here">Your saved cards would appear here</string>
+
+    <string-array name="states">
+        <item>ABIA</item>
+        <item>ADAMAWA</item>
+        <item>AKWA IBOM</item>
+        <item>ANAMBRA</item>
+        <item>BAUCHI</item>
+        <item>BAYELSA</item>
+        <item>BENUE</item>
+        <item>BORNO</item>
+        <item>CROSS RIVER</item>
+        <item>DELTA</item>
+        <item>EBONYI</item>
+        <item>EDO</item>
+        <item>EKITI</item>
+        <item>ENUGU</item>
+        <item>GOMBE</item>
+        <item>IMO</item>
+        <item>JIGAWA</item>
+        <item>KADUNA</item>
+        <item>KANO</item>
+        <item>KATSINA</item>
+        <item>KEBBI</item>
+        <item>KOGI</item>
+        <item>KWARA</item>
+        <item>LAGOS</item>
+        <item>NASARAWA</item>
+        <item>NIGER</item>
+        <item>OGUN</item>
+        <item>ONDO</item>
+        <item>OSUN</item>
+        <item>OYO</item>
+        <item>PLATEAU</item>
+        <item>RIVERS</item>
+        <item>SOKOTO</item>
+        <item>TARABA</item>
+        <item>YOBE</item>
+        <item>ZAMFARA</item>
+    </string-array>
 </resources>

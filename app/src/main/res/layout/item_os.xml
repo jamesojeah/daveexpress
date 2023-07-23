@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/item_list_marginTop"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="@dimen/item_list_padding">
+
+    <LinearLayout
+        android:id="@+id/ll_item_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rv_item_image_background"
+        android:padding="@dimen/item_image_padding"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_item_image"
+            android:layout_width="@dimen/item_image_width"
+            android:layout_height="@dimen/item_image_height"
+            android:contentDescription="@string/content_description"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_os_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/item_image_title_price_marginStart"
+        android:layout_marginEnd="@dimen/item_image_title_price_marginStart"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_os_quantityleft"
+        app:layout_constraintStart_toEndOf="@id/ll_item_image"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.example.daveexpress.utils.MSPTextViewBold
+            android:id="@+id/tv_item_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/item_value_text_color"
+            android:textSize="@dimen/rv_item_name_textSize"
+            tools:text="Name" />
+
+        <com.example.daveexpress.utils.MSPTextView
+            android:id="@+id/tv_item_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rv_item_price_marginTop"
+            android:textColor="@color/item_value_text_color"
+            android:textSize="@dimen/rv_item_price_textSize"
+            android:textStyle="bold"
+            tools:text="₦100.00" />
+
+        <com.example.daveexpress.utils.MSPTextView
+            android:id="@+id/tv_quantity_left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/rv_item_price_marginTop"
+            android:textColor="@color/item_value_text_color"
+            android:textSize="@dimen/rv_item_price_textSize"
+            android:textStyle="bold"
+            tools:text="Quantity Left" />
+
+
+    </LinearLayout>
+
+    <com.example.daveexpress.utils.MSPTextView
+        android:id="@+id/tv_os_quantityleft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_primary_color_border_background"
+        android:paddingStart="@dimen/product_details_stock_quantity_paddingStartEnd"
+        android:paddingTop="@dimen/product_details_stock_quantity_paddingTopBottom"
+        android:paddingEnd="@dimen/product_details_stock_quantity_paddingStartEnd"
+        android:paddingBottom="@dimen/product_details_stock_quantity_paddingTopBottom"
+        android:textColor="@color/colorSecondaryText"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ll_os_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.example.daveexpress.activities
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.daveexpress.R
 import com.example.daveexpress.databinding.ActivityAddEditAddressBinding
@@ -20,6 +21,10 @@ class AddEditAddressActivity : BaseActivity() {
         binding = ActivityAddEditAddressBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val states = resources.getStringArray(R.array.states)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, states)
+        binding.autocompleteTextView.setAdapter(arrayAdapter)
+
         setupActionBar()
 
         if (intent.hasExtra(Constants.EXTRA_ADDRESS_DETAILS)) {
@@ -35,6 +40,7 @@ class AddEditAddressActivity : BaseActivity() {
                 binding.etFullName.setText(mAddressDetails?.name)
                 binding.etPhoneNumber.setText(mAddressDetails?.mobileNumber)
                 binding.etAddress.setText(mAddressDetails?.address)
+                binding.autocompleteTextView.setText(mAddressDetails?.state)
                 binding.etZipCode.setText(mAddressDetails?.zipCode)
                 binding.etAdditionalNote.setText(mAddressDetails?.additionalNote)
 
@@ -139,6 +145,7 @@ class AddEditAddressActivity : BaseActivity() {
         val phoneNumber: String = binding.etPhoneNumber.text.toString().trim { it <= ' ' }
         val address: String = binding.etAddress.text.toString().trim { it <= ' ' }
         val zipCode: String = binding.etZipCode.text.toString().trim { it <= ' ' }
+        val state: String = binding.autocompleteTextView.text.toString().trim{it <= ' '}
         val additionalNote: String = binding.etAdditionalNote.text.toString().trim { it <= ' ' }
         val otherDetails: String = binding.etOtherDetails.text.toString().trim { it <= ' ' }
 
@@ -168,6 +175,7 @@ class AddEditAddressActivity : BaseActivity() {
                 address,
                 zipCode,
                 additionalNote,
+                state,
                 addressType,
                 otherDetails
             )

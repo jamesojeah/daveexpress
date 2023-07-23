@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    tools:context=".activities.ShippingFees">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_shipping_fees"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/app_gradient_color_background"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:paddingStart="@dimen/toolbar_title_paddingStart"
+            android:paddingEnd="0dp"
+            android:text="SHIPPING FEES"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/toolbar_title_text_size"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:padding="16dp"
+        android:visibility="visible"
+        app:cardBackgroundColor="@color/colorPrimary"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="3dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_shipping_fees">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/card_expire"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="monospace"
+                android:gravity="center"
+                android:text="Here you can add and edit \n the Shipping fees for various states."
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="@android:color/white"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/lagostv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="LAGOS"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/lagoset"
+        app:layout_constraintStart_toStartOf="@+id/lagoset" />
+
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/lagoset"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/card" />
+
+    <TextView
+        android:id="@+id/lagosamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="LAGOS AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/lagoset"
+        app:layout_constraintStart_toStartOf="@+id/lagoset" />
+
+    <TextView
+        android:id="@+id/lagosshippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="2000"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/lagoset"
+        app:layout_constraintStart_toEndOf="@id/lagosamounttv" />
+
+    <TextView
+        android:id="@+id/deltatv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="DELTA"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/deltaet"
+        app:layout_constraintStart_toStartOf="@+id/deltaet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/deltaet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lagoset"
+        app:layout_constraintTop_toBottomOf="@+id/card" />
+
+    <TextView
+        android:id="@+id/deltaamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="DELTA AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/deltaet"
+        app:layout_constraintStart_toStartOf="@+id/deltaet" />
+
+    <TextView
+        android:id="@+id/deltashippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="1500"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/deltaet"
+        app:layout_constraintStart_toEndOf="@id/deltaamounttv" />
+
+
+    <TextView
+        android:id="@+id/abujatv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ABUJA"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/abujaet"
+        app:layout_constraintStart_toStartOf="@+id/abujaet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/abujaet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:layout_marginLeft="24dp"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lagosamounttv" />
+
+    <TextView
+        android:id="@+id/abujaamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ABUJA AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/abujaet"
+        app:layout_constraintStart_toStartOf="@+id/abujaet" />
+
+    <TextView
+        android:id="@+id/abujashippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="3000"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/abujaet"
+        app:layout_constraintStart_toEndOf="@id/abujaamounttv" />
+
+    <TextView
+        android:id="@+id/bayelsatv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="BAYELSA"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/bayelsaet"
+        app:layout_constraintStart_toStartOf="@+id/bayelsaet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/bayelsaet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/abujaet"
+        app:layout_constraintTop_toBottomOf="@+id/deltaamounttv" />
+
+    <TextView
+        android:id="@+id/bayelsaamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="BAYELSA AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/bayelsaet"
+        app:layout_constraintStart_toStartOf="@+id/bayelsaet" />
+
+    <TextView
+        android:id="@+id/bayelsashippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="2500"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/bayelsaet"
+        app:layout_constraintStart_toEndOf="@id/bayelsaamounttv" />
+
+    <TextView
+        android:id="@+id/Enugutv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ENUGU"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/Enuguet"
+        app:layout_constraintStart_toStartOf="@+id/Enuguet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/Enuguet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:layout_marginLeft="24dp"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/abujaamounttv" />
+
+    <TextView
+        android:id="@+id/enuguamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ENUGU AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/Enuguet"
+        app:layout_constraintStart_toStartOf="@+id/Enuguet" />
+
+    <TextView
+        android:id="@+id/enugushippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="3000"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/Enuguet"
+        app:layout_constraintStart_toEndOf="@id/enuguamounttv" />
+
+    <TextView
+        android:id="@+id/edotv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="EDO"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/edoet"
+        app:layout_constraintStart_toStartOf="@+id/edoet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edoet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/Enuguet"
+        app:layout_constraintTop_toBottomOf="@+id/bayelsaamounttv" />
+
+    <TextView
+        android:id="@+id/edoamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="EDO AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/edoet"
+        app:layout_constraintStart_toStartOf="@+id/edoet" />
+
+    <TextView
+        android:id="@+id/edoshippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="2500"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/edoet"
+        app:layout_constraintStart_toEndOf="@id/edoamounttv" />
+
+    <TextView
+        android:id="@+id/anambratv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ANAMBRA"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/anambraet"
+        app:layout_constraintStart_toStartOf="@+id/anambraet" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/anambraet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:layout_marginLeft="24dp"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/enuguamounttv" />
+
+    <TextView
+        android:id="@+id/anambraamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="ANAMBRA AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/anambraet"
+        app:layout_constraintStart_toStartOf="@+id/anambraet" />
+
+    <TextView
+        android:id="@+id/anambrashippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="3000"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/anambraet"
+        app:layout_constraintStart_toEndOf="@id/anambraamounttv" />
+
+    <TextView
+        android:id="@+id/otherstv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="OTHER STATES"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/otherset"
+        app:layout_constraintStart_toStartOf="@+id/otherset" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/otherset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:hint="Enter Amount"
+        android:inputType="number"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:textColor="@color/blue_grey_800"
+        android:textColorHint="@color/grey_40"
+        android:theme="@style/EditText.Grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/anambraet"
+        app:layout_constraintTop_toBottomOf="@+id/edoamounttv" />
+
+    <TextView
+        android:id="@+id/othersamounttv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="OTHERS AMOUNT:"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/otherset"
+        app:layout_constraintStart_toStartOf="@+id/otherset" />
+
+    <TextView
+        android:id="@+id/othersshippingfee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="2500"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@+id/otherset"
+        app:layout_constraintStart_toEndOf="@id/othersamounttv" />
+
+
+    <com.example.daveexpress.utils.MSPButton
+        android:id="@+id/save_shipping_fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="52dp"
+        android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="SAVE"
+        android:textAllCaps="false"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/othersshippingfee" />
+
+
+    <com.example.daveexpress.utils.MSPButton
+        android:id="@+id/update_shipping_fee"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackground"
+        android:text="UPDATE"
+        android:textAllCaps="false"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:textColor="@android:color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/save_shipping_fee" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -155,7 +155,9 @@ lateinit var adapter: DashboardItemsListAdapter
              adapter = DashboardItemsListAdapter(requireActivity())
 
             binding.rvDashboardItems.adapter = adapter
-                    adapter.setData(itemsModalList = dashboardItemsList)
+
+
+            adapter.setData(itemsModalList = dashboardItemsList)
             adapter.setOnClickListener(object :
                 DashboardItemsListAdapter.OnClickListener {
                 override fun onClick(position: Int, product: Product) {

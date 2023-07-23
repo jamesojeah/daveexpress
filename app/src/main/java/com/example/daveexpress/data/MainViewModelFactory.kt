@@ -26,3 +26,15 @@ class CardDetailsViewModelFactory(val repository: MyRepository) : ViewModelProvi
         return CardViewModel(repository) as T
     }
 }
+
+class SoldProductsViewModelFactory(val repository: MyRepository) : ViewModelProvider.Factory{
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return SoldProductsViewModel(repository) as T
+    }
+}
+
+class OSViewModelFactory(val repository: MyRepository) : ViewModelProvider.Factory{
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        return OSViewModel(repository) as T
+    }
+}

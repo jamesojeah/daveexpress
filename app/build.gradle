@@ -23,7 +23,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-
+        buildConfigField("String", "PSTK_PUBLIC_KEY", PSTK_PUBLIC_KEY)
     }
 
 
@@ -65,7 +65,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+//    implementation 'com.google.android.material:material:1.10.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-auth-ktx:21.0.3'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.5.1'

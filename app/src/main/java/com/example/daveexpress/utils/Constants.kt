@@ -7,6 +7,7 @@ import android.provider.MediaStore
 import android.webkit.MimeTypeMap
 
 object Constants {
+    const val PSTK_PUBLIC_KEY: String = "pk_test_ed24693280de878e2e0cfcb8663d9324466a1ea6"
     const val USERS: String = "users"
     const val DAVEEXPRESS_PREFERENCES: String = "DaveExpressPrefs"
     const val LOGGED_IN_USERNAME: String = "logged_in_username"
@@ -22,7 +23,7 @@ object Constants {
     const val LAST_NAME: String = "lastName"
     const val MALE: String = "male"
     const val FEMALE: String = "female"
-
+    const val SHIPPINGFEES: String = "shippingfees"
     const val MOBILE: String = "mobile"
     const val GENDER: String = "gender"
     const val IMAGE: String = "image"
@@ -33,6 +34,17 @@ object Constants {
     const val PRODUCTS: String = "products"
     const val USER_ID: String = "user_id"
     const val CARDS: String = "cards"
+
+    const val LAGOS_FEE: String = "lagosFee"
+    const val DELTA_FEE: String = "deltaFee"
+    const val ABUJA_FEE: String = "abujaFee"
+    const val BAYELSA_FEE: String = "bayelsaFee"
+    const val ENUGU_FEE: String = "enuguFee"
+    const val EDO_FEE: String = "edoFee"
+    const val ANAMBRA_FEE: String = "anambraFee"
+    const val OTHERS_FEE: String = "othersFee"
+    const val SHIPPINGFEEID: String = "ShippingfeeId"
+
 
 
     const val SHOES: String = "Shoes"
@@ -73,6 +85,8 @@ object Constants {
 
     const val STOCK_QUANTITY: String = "stock_quantity"
     const val EXTRA_SOLD_PRODUCT_DETAILS: String = "extra_sold_product_details"
+    const val EXTRA_OUT_OF_STOCK: String = "extra_out_of_stock"
+
     const val EXTRA_MY_ORDER_DETAILS: String = "extra_MY_ORDER_DETAILS"
     const val SOLD_PRODUCTS: String = "sold_products"
     const val ADDRESSES: String = "addresses"

@@ -39,6 +39,7 @@
         android:textAlignment="center"
         android:textColor="@color/colorSecondaryText"
         android:textSize="@dimen/no_data_found_textSize"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

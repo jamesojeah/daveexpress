@@ -5,14 +5,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.daveexpress.R
 import com.example.daveexpress.activities.*
 import com.example.daveexpress.activities.ui.fragments.DashboardFragment
 import com.example.daveexpress.activities.ui.fragments.OrdersFragment
 import com.example.daveexpress.activities.ui.fragments.ProductsFragment
-import com.example.daveexpress.activities.ui.fragments.SoldProductsFragment
 import com.example.daveexpress.models.*
 import com.example.daveexpress.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
@@ -57,10 +54,11 @@ class FirestoreClass {
             .document(userInfo.id)
             // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge later on instead of replacing the fields.
             .set(userInfo, SetOptions.merge())
-            .addOnSuccessListener {
+            .addOnSuccessListener { document ->
+
 
                 // Here call a function of base activity for transferring the result to it.
-                activity.userRegistrationSuccessGoogle()
+                activity.userRegistrationGoogle()
             }
             .addOnFailureListener { e ->
                 activity.hideProgressDialog()
@@ -129,6 +127,45 @@ class FirestoreClass {
             }
     }
 
+    fun getUserDetailsGoogle(activity: Activity){
+        mFireStore.collection(Constants.USERS)
+            // The document id to get the Fields of user.
+            .document(getCurrentUserID())
+            .get()
+            .addOnSuccessListener { document ->
+
+                Log.i(activity.javaClass.simpleName, document.toString())
+
+                // Here we have received the document snapshot which is converted into the User Data model object.
+                val user = document.toObject(User::class.java)!!
+
+                val sharedPreferences =
+                    activity.getSharedPreferences(
+                        Constants.DAVEEXPRESS_PREFERENCES,
+                        Context.MODE_PRIVATE
+                    )
+
+                val editor: SharedPreferences.Editor = sharedPreferences.edit()
+                if (user != null) {
+                    editor.putString(
+                        Constants.LOGGED_IN_USERNAME,
+                        "${user.firstName} ${user.lastName}"
+                    )
+                }
+                editor.apply()
+
+                // TODO Step 6: Pass the result to the Login Activity.
+                // START
+                when (activity) {
+                    is LoginActivity -> {
+                        // Call a function of base activity for transferring the result to it.
+                        if (user != null) {
+                            activity.userRegistrationSuccessGoogle(user)
+                        }
+                    }
+                }
+            }
+    }
     /**
      * A function to get the logged user details from from FireStore Database.
      */
@@ -183,6 +220,11 @@ class FirestoreClass {
                     is MyOrderDetailsActivity ->{
                         if (user != null) {
                             activity.adminSuccess(user)
+                        }
+                    }
+                    is PaymentCardDetails -> {
+                        if (user!=null){
+                            activity.userPaymentSuccess(user)
                         }
                     }
                 }
@@ -249,6 +291,26 @@ class FirestoreClass {
                 )
             }
     }
+
+    fun addShippingFees(activity: ShippingFees, shippingfeeinfo: Shipping){
+        mFireStore.collection(Constants.SHIPPINGFEES)
+            // Document ID against which the data to be updated. Here the document id is the current logged in user id.
+            .document()
+            // A HashMap of fields which are to be updated.
+            .set(shippingfeeinfo, SetOptions.merge())
+            .addOnSuccessListener {
+                activity.addshippingfeesuccess()
+            }
+            .addOnFailureListener {
+                e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the shipping fees.",
+                    e
+                )
+            }
+    }
+
 
     // A function to upload the image to the cloud storage.
     fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?, imageType: String) {
@@ -610,6 +672,32 @@ class FirestoreClass {
                 // TODO Step 4: Notify the success result.
                 // START
                 activity.productDetailsSuccess(product)
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(activity.javaClass.simpleName, "Error while getting the product details.", e)
+            }
+    }
+
+    fun getshippingfees(activity: ShippingFees, shippingfeeId: String){
+        mFireStore.collection(Constants.SHIPPINGFEES)
+            .document("2nMCf36YOAq12Hf8Fcz7")
+            .get() // Will get the document snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the product details in the form of document.
+                Log.e(activity.javaClass.simpleName, document.toString())
+
+                // Convert the snapshot to the object of Product data model class.
+                val shipping = document.toObject(Shipping::class.java)!!
+
+                // TODO Step 4: Notify the success result.
+                // START
+                activity.getshippingfeesSuccess(shipping)
                 // END
             }
             .addOnFailureListener { e ->
@@ -1090,6 +1178,31 @@ class FirestoreClass {
             }
     }
 
+    fun updateshippingfees(activity: Activity, shippingfeeId: String, shippingfeeHashMap: HashMap<String, Any>){
+        mFireStore.collection(Constants.SHIPPINGFEES)
+
+            .document(shippingfeeId)
+            .update(shippingfeeHashMap)
+            .addOnSuccessListener {
+
+                when (activity) {
+                    is ShippingFees -> {
+                        activity.shippingfeesUpdateSuccess()
+                        Log.d("Order Status update success", "Order Status update success")
+                        // END
+                    }
+
+                }
+            }
+            .addOnFailureListener { e ->
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while updating the status.",
+                    e
+                )
+            }
+    }
+
     fun addSalesPrice(activity: Activity, productsalesId: String, salesHashMap: HashMap<String, Any>){
         mFireStore.collection(Constants.PRODUCTS)
 
@@ -1237,42 +1350,42 @@ class FirestoreClass {
 
         //A function to get the list of sold products from the cloud firestore.
 
-        fun getSoldProductsList(fragment: SoldProductsFragment) {
-            // The collection name for SOLD PRODUCTS
-            mFireStore.collection(Constants.SOLD_PRODUCTS)
-                .whereEqualTo(Constants.USER_ID, getCurrentUserID())
-                .orderBy("order_datetime", Query.Direction.DESCENDING)
-                .get() // Will get the documents snapshots.
-                .addOnSuccessListener { document ->
-                    // Here we get the list of sold products in the form of documents.
-                    Log.e(fragment.javaClass.simpleName, document.documents.toString())
-
-                    // Here we have created a new instance for Sold Products ArrayList.
-                    val list: ArrayList<SoldProduct> = ArrayList()
-
-                    // A for loop as per the list of documents to convert them into Sold Products ArrayList.
-                    for (i in document.documents) {
-
-                        val soldProduct = i.toObject(SoldProduct::class.java)!!
-                        soldProduct.id = i.id
-
-                        list.add(soldProduct)
-                    }
-
-                    // TODO Step 3: Notify the success result to the base class.
-                    // START
-                    fragment.successSoldProductsList(list)
-                    // END
-                }
-                .addOnFailureListener { e ->
-                    // Hide the progress dialog if there is any error.
-                    fragment.hideProgressDialog()
-
-                    Log.e(
-                        fragment.javaClass.simpleName,
-                        "Error while getting the list of sold products.",
-                        e
-                    )
-                }
-        }
+//        fun getSoldProductsList(fragment: SoldProductsFragment) {
+//            // The collection name for SOLD PRODUCTS
+//            mFireStore.collection(Constants.SOLD_PRODUCTS)
+//                .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+//                .orderBy("order_datetime", Query.Direction.DESCENDING)
+//                .get() // Will get the documents snapshots.
+//                .addOnSuccessListener { document ->
+//                    // Here we get the list of sold products in the form of documents.
+//                    Log.e(fragment.javaClass.simpleName, document.documents.toString())
+//
+//                    // Here we have created a new instance for Sold Products ArrayList.
+//                    val list: ArrayList<SoldProduct> = ArrayList()
+//
+//                    // A for loop as per the list of documents to convert them into Sold Products ArrayList.
+//                    for (i in document.documents) {
+//
+//                        val soldProduct = i.toObject(SoldProduct::class.java)!!
+//                        soldProduct.id = i.id
+//
+//                        list.add(soldProduct)
+//                    }
+//
+//                    // TODO Step 3: Notify the success result to the base class.
+//                    // START
+//                    fragment.successSoldProductsList(list)
+//                    // END
+//                }
+//                .addOnFailureListener { e ->
+//                    // Hide the progress dialog if there is any error.
+//                    fragment.hideProgressDialog()
+//
+//                    Log.e(
+//                        fragment.javaClass.simpleName,
+//                        "Error while getting the list of sold products.",
+//                        e
+//                    )
+//                }
+//        }
     }

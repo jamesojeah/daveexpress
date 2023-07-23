@@ -56,6 +56,7 @@ open class AddressListAdapter(
         if (holder is MyViewHolder) {
             holder.itemView.findViewById<TextView>(R.id.tv_address_full_name).text = model.name
             holder.itemView.findViewById<TextView>(R.id.tv_address_type).text = model.type
+            holder.itemView.findViewById<TextView>(R.id.tv_address_state).text = model.state
             holder.itemView.findViewById<TextView>(R.id.tv_address_details).text = "${model.address}, ${model.zipCode}"
             holder.itemView.findViewById<TextView>(R.id.tv_address_mobile_number).text = model.mobileNumber
         }

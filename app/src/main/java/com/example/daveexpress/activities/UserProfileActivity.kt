@@ -78,10 +78,12 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
 
         } else{
 
-            val currentUser = mAuth.currentUser
-            binding.etFirstName.setText(currentUser?.displayName)
-            binding.etEmail.isEnabled = false
-            binding.etEmail.setText(currentUser?.email)
+//            val currentUser = mAuth.currentUser
+//            binding.etFirstName.setText(currentUser?.displayName)
+//            binding.etEmail.isEnabled = false
+//            binding.etEmail.setText(currentUser?.email)
+//
+//            mUserDetails = currentUser
         }
 
 

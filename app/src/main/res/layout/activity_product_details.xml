@@ -191,6 +191,112 @@
             </LinearLayout>
 
             <com.example.daveexpress.utils.MSPTextViewBold
+                android:id="@+id/tv_selectasize"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/product_details_label_margin"
+                android:text="@string/lbl_selectasize"
+                android:textColor="@color/item_value_text_color"
+                android:textSize="@dimen/product_details_label_textSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ll_stock_quantity" />
+
+            <RadioGroup
+                android:id="@+id/rg_sizeselector"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/profile_radio_button_height"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_selectasize">
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:checked="true"
+                    android:gravity="center"
+                    android:text="S1"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="S2"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size3"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="S3"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size4"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="S4"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size5"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="S5"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+
+                <com.example.daveexpress.utils.MSPRadioButton
+                    android:id="@+id/rb_size6"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/profile_radio_button_marginStartEnd"
+                    android:layout_weight="1"
+
+                    android:background="@drawable/drawable_gender_tab_selector"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="S6"
+                    android:textColor="@drawable/drawable_gender_tab_text_color_selector"
+                    android:textStyle="bold" />
+            </RadioGroup>
+
+
+            <com.example.daveexpress.utils.MSPTextViewBold
                 android:id="@+id/tv_availablesizes_heading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,7 +306,7 @@
                 android:textSize="@dimen/product_details_label_textSize"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ll_stock_quantity" />
+                app:layout_constraintTop_toBottomOf="@id/rg_sizeselector" />
 
             <com.example.daveexpress.utils.MSPTextView
                 android:id="@+id/tv_availablesizes_body"

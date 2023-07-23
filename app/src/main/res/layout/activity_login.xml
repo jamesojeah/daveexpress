@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorWhite"
+    android:theme="@style/Theme.MaterialComponents.Light.Bridge"
     tools:context=".activities.LoginActivity">
 
     <FrameLayout
@@ -56,7 +57,9 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/et_hint_email_id"
         android:textColorHint="@color/colorPrimary"
+        app:startIconTint="@null"
         app:layout_constraintEnd_toEndOf="parent"
+        app:startIconDrawable="@drawable/ic_baseline_email_24"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
@@ -80,16 +83,18 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-
+app:startIconDrawable="@drawable/padlock"
+        app:startIconTint="@null"
         android:hint="@string/et_hint_password"
         android:textColorHint="@color/colorPrimary"
+        app:endIconDrawable="@drawable/eye"
         app:endIconMode="password_toggle"
-        app:endIconTint="@color/colorPrimary"
+        app:endIconTint="@color/my_selector_color"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_email"
         app:passwordToggleEnabled="true"
-        app:passwordToggleTint="@color/colorAccent">
+        app:passwordToggleTint="@color/purple_200">
 
         <com.example.daveexpress.utils.MSPEditText
             android:id="@+id/et_password"

@@ -1,5 +1,6 @@
 package com.example.daveexpress.activities
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -13,6 +14,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager.VERTICAL
+import co.paystack.android.Paystack
+import co.paystack.android.PaystackSdk
+import co.paystack.android.Transaction
+import co.paystack.android.model.Card
+import co.paystack.android.model.Charge
+import com.example.daveexpress.BuildConfig
+
 import com.example.daveexpress.R
 import com.example.daveexpress.adapters.CardRecyclerViewAdapter
 import com.example.daveexpress.data.CardDetailsViewModelFactory
@@ -24,9 +32,15 @@ import com.example.daveexpress.db.CardEntity
 import com.example.daveexpress.firestore.FirestoreClass
 import com.example.daveexpress.models.*
 import com.example.daveexpress.utils.Constants
+import com.example.daveexpress.utils.MSPButton
 import com.example.daveexpress.utils.Tools
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListener {
 
@@ -43,6 +57,10 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
     private var mSubTotal: Double = 0.0
     private var mSubTotalSale: Double = 0.0
     private var mSubTotalNosale: Double = 0.0
+
+    private lateinit var mCardNumber: TextInputEditText
+    private lateinit var mCardExpiry: TextInputEditText
+    private lateinit var mCardCVV: TextInputEditText
 
     private var mTotalAmount: Double = 0.0
     private var mOrderStatus: String = "Pending"
@@ -70,6 +88,10 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
             Log.d("intent doesnt have extra", "intent doesnt have extra")
         }
 
+        // add these lines
+        initializePaystack()
+        initializeFormVariables()
+
         card_number = findViewById<View>(R.id.card_number) as TextView?
         card_expire = findViewById<View>(R.id.card_expire) as TextView?
         card_cvv = findViewById<View>(R.id.card_cvv) as TextView?
@@ -84,6 +106,16 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
             override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, count: Int) {
                 if (charSequence.toString().trim { it <= ' ' }.length == 0) {
                     card_number!!.text = "**** **** **** ****"
+
+                    if(card_number!!.text.startsWith("5", ignoreCase = true)){
+                        binding.masterCardLogo.visibility = View.VISIBLE
+                        binding.visaCardLogo.visibility = View.GONE
+                    }
+
+                    if (card_number!!.text.startsWith("4", ignoreCase = true)){
+                        binding.masterCardLogo.visibility = View.GONE
+                        binding.visaCardLogo.visibility = View.VISIBLE
+                    }
                 } else {
                     val number: String =
                         Tools.insertPeriodically(charSequence.toString().trim { it <= ' ' }, " ", 4)
@@ -143,6 +175,7 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
         val divider = DividerItemDecoration(applicationContext, VERTICAL)
         binding.rvMyCards.addItemDecoration(divider)
 
+//        binding.billAmount.text = "₦$total"
 
         getProductList()
 
@@ -160,15 +193,11 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
 
         })
 
-        binding.paymentProceed.setOnClickListener {
-
+//        binding.paymentProceed.setOnClickListener {
 //                placeAnOrder()
-//
 //            if (binding.paymentProceed.text.equals("PROCEED")) {
 //                val card = CardEntity(0, name, cardnumber, exp, cvv)
 //                viewModel.insertCardInfo(card)
-//
-//
 //            }else{
 //                val card = CardEntity(binding.etName.getTag(binding.etName.id).toString().toInt(),
 //                    name, cardnumber, exp, cvv)
@@ -179,12 +208,142 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
 //            binding.etCardNumber.setText("")
 //            binding.etExpire.setText("")
 //            binding.etCvv.setText("")
-        }
+//        }
 
         binding.saveCard.setOnClickListener {
             savecardtofirestore()
         }
     }
+
+    private fun initializePaystack() {
+        PaystackSdk.initialize(applicationContext)
+        PaystackSdk.setPublicKey(Constants.PSTK_PUBLIC_KEY)
+    }
+
+    private fun initializeFormVariables() {
+        mCardNumber = findViewById(R.id.et_card_number)
+        et_expire = findViewById(R.id.et_expire)
+        mCardCVV = findViewById(R.id.et_cvv)
+
+        // this is used to add a forward slash (/) between the cards expiry month
+        // and year (11/21). After the month is entered, a forward slash is added
+        // before the year
+
+//        binding.etExpire.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?,
+//                                           start: Int, count: Int, after: Int) {
+//
+//            }
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+//
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                if (s.toString().length == 2 && !s.toString().contains("/")) {
+//                    s!!.append("/")
+//                }
+//            }
+//
+//        })
+
+        val button = findViewById<MSPButton>(R.id.payment_proceed)
+        button.setOnClickListener { v: View? -> performCharge() }
+    }
+
+    private fun performCharge() {
+        val cardNumber = mCardNumber.text.toString()
+        val cardExpiry = card_expire?.text.toString()
+        val cvv = mCardCVV.text.toString()
+
+        if (cardExpiry.isEmpty()){
+            Toast.makeText(this@PaymentCardDetails, "Please input Expiry date", Toast.LENGTH_SHORT)
+                .show()
+
+        }else{
+            val cardExpiryArray = cardExpiry.split("/").toTypedArray()
+            val expiryMonth = cardExpiryArray[0].toInt()
+            val expiryYear = cardExpiryArray[1].toInt()
+            var amount = mTotalAmount.toInt()
+            amount *= 100
+
+            val card = Card(cardNumber, expiryMonth, expiryYear, cvv)
+
+            val charge = Charge()
+            charge.amount = amount
+            charge.email = "customer@email.com"
+            charge.card = card
+
+            PaystackSdk.chargeCard(this, charge, object : Paystack.TransactionCallback {
+                override fun onSuccess(transaction: Transaction) {
+                    parseResponse(transaction.reference)
+
+                    mTotalAmount = amount.toDouble()
+                    FirestoreClass().getUserDetails(this@PaymentCardDetails)
+
+         }
+
+                override fun beforeValidate(transaction: Transaction) {
+                    Log.d("Main Activity", "beforeValidate: " + transaction.reference)
+                }
+
+                override fun onError(error: Throwable, transaction: Transaction) {
+                    Log.d("Main Activity", "onError: " + error.localizedMessage)
+                    Log.d("Main Activity", "onError: $error")
+                    Toast.makeText(this@PaymentCardDetails, "Payment Failed", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            })
+
+
+        }
+
+    }
+
+    fun userPaymentSuccess(user: User){
+
+        placeAnOrder()
+
+        val view = View.inflate(this@PaymentCardDetails, R.layout.dialog_payment_success, null)
+        val builder = AlertDialog.Builder(this@PaymentCardDetails)
+        builder.setView(view)
+        val dialog = builder.create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.show()
+        dialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
+
+        var paidAmount = mTotalAmount/100
+
+        view.findViewById<TextView>(R.id.dialog_amount).text = "₦$paidAmount"
+
+        view.findViewById<FloatingActionButton>(R.id.fab).setOnClickListener {
+            dialog.dismiss()
+
+
+        }
+
+        view.findViewById<TextView>(R.id.payment_name).text = "${user.firstName} ${user.lastName}"
+        view.findViewById<TextView>(R.id.payment_email).text = user.email
+
+        // Date Format in which the date will be displayed in the UI.
+        val dateFormat = "dd MMM yyyy HH:mm"
+        // Create a DateFormatter object for displaying date in specified format.
+        val formatter = SimpleDateFormat(dateFormat, Locale.getDefault())
+
+        // Create a calendar object that will convert the date and time value in milliseconds to date.
+        val calendar: Calendar = Calendar.getInstance()
+//        calendar.timeInMillis = orderDetails.order_datetime
+
+        val orderDateTime = formatter.format(calendar.time)
+        view.findViewById<TextView>(R.id.payment_date).text = orderDateTime
+        // END
+    }
+
+    private fun parseResponse(transactionReference: String) {
+        val message = "Payment Successful - $transactionReference"
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
      fun getProductList() {
 
         // Show the progress dialog.
@@ -290,7 +449,7 @@ class PaymentCardDetails : BaseActivity(), CardRecyclerViewAdapter.RowClickListe
 
              val total = subTotal + 10
              mTotalAmount = total
-//            binding.tvCheckoutTotalAmount.text = "$$total"
+             binding.billAmount.text = "₦$total"
 //        } else {
 //            binding.llCheckoutPlaceOrder.visibility = View.GONE
 //        }

@@ -51,6 +51,15 @@
         tools:text="XYZ" />
 
     <com.example.daveexpress.utils.MSPTextView
+        android:id="@+id/tv_address_state"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/address_details_marginTop"
+        android:textColor="@color/item_value_text_color"
+        android:textSize="@dimen/address_details_textSize"
+        tools:text="Delta State" />
+
+    <com.example.daveexpress.utils.MSPTextView
         android:id="@+id/tv_address_mobile_number"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -58,4 +67,6 @@
         android:textColor="@color/item_value_text_color"
         android:textSize="@dimen/address_details_textSize"
         tools:text="+64 123456789" />
+
+
 </LinearLayout>

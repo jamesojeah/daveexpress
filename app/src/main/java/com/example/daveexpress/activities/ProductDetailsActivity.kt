@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.example.daveexpress.R
@@ -41,7 +42,7 @@ private lateinit var mProductDetails: Product
         if (intent.hasExtra(Constants.EXTRA_PRODUCT_ID)) {
             mProductId = intent.getStringExtra(Constants.EXTRA_PRODUCT_ID)!!
         }
-//        var productOwnerId: String = ""
+//
 
         if (intent.hasExtra(Constants.EXTRA_PRODUCT_OWNER_ID)) {
             mProductOwnerId = intent.getStringExtra(Constants.EXTRA_PRODUCT_OWNER_ID)!!
@@ -250,6 +251,35 @@ private lateinit var mProductDetails: Product
         binding.tvAvailablesizesBody.text = product.available_sizes
         binding.tvProductDetailsSalePrice.text = "₦${product.sale_price}"
 
+        //size selector
+        binding.rbSize1.text = product.available_size1
+        binding.rbSize2.text = product.available_size2
+        binding.rbSize3.text = product.available_size3
+        binding.rbSize4.text = product.available_size4
+        binding.rbSize5.text = product.available_size5
+        binding.rbSize6.text = product.available_size6
+
+        //size selector visibility
+        if (product.available_size1 == ""){
+            binding.rbSize1.visibility = GONE
+        }
+        if (product.available_size2 == ""){
+            binding.rbSize2.visibility = GONE
+        }
+        if (product.available_size3 == ""){
+            binding.rbSize3.visibility = GONE
+        }
+        if (product.available_size4 == ""){
+            binding.rbSize4.visibility = GONE
+        }
+        if (product.available_size5 == ""){
+            binding.rbSize5.visibility = GONE
+        }
+        if (product.available_size6 == ""){
+            binding.rbSize6.visibility = GONE
+        }
+
+
         if (product.sale_price == ""){
             binding.tvProductDetailsSalePrice.visibility = View.GONE
             binding.tvProductDetailsPercentOff.visibility = View.GONE
@@ -325,7 +355,10 @@ private lateinit var mProductDetails: Product
     private fun addToCart() {
 
             mStockQuantity = binding.tvProductDetailsAvailableQuantity.text.toString()
-            mChosenSize = binding.etSelectsize.text.toString()
+
+        val checkedSizeRadioButtonId = binding.rgSizeselector.checkedRadioButtonId
+            mChosenSize = findViewById<RadioButton>(checkedSizeRadioButtonId).toString()
+
             val addToCart = CartItem(
                 FirestoreClass().getCurrentUserID(),
                 mProductOwnerId,

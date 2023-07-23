@@ -16,6 +16,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mUserDetails: User
 
     private lateinit var binding: ActivitySettingsBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
@@ -27,6 +28,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         binding.btnLogout.setOnClickListener(this@SettingsActivity)
         binding.llAddress.setOnClickListener(this)
         binding.btnAboutUs.setOnClickListener(this)
+        binding.llShippingfees.setOnClickListener(this)
         // END
     }
 
@@ -89,8 +91,14 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
         if (user.admin == 0){
             binding.tvAdmin.visibility = View.INVISIBLE
+            binding.llShippingfees.visibility = View.INVISIBLE
+            binding.shippingtv.visibility = View.INVISIBLE
+            binding.shippingarrow.visibility = View.INVISIBLE
         } else{
             binding.tvAdmin.visibility = View.VISIBLE
+            binding.llShippingfees.visibility = View.VISIBLE
+            binding.shippingtv.visibility = View.VISIBLE
+            binding.shippingarrow.visibility = View.VISIBLE
         }
         // END
     }
@@ -117,6 +125,10 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 }
                 R.id.btn_about_us ->{
                     val intent = Intent(this@SettingsActivity, AboutUs::class.java)
+                    startActivity(intent)
+                }
+                R.id.ll_shippingfees ->{
+                    val intent = Intent(this@SettingsActivity, ShippingFees::class.java)
                     startActivity(intent)
                 }
 

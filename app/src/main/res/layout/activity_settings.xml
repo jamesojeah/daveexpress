@@ -78,7 +78,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/fl_header_bg"
             android:layout_alignParentEnd="true"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/item_grey_border_background"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             android:paddingStart="@dimen/settings_edit_label_marginStartEnd"
@@ -156,7 +159,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_mobile_number"
-            android:layout_margin="@dimen/settings_address_margin"
+            android:layout_marginStart="@dimen/settings_address_margin"
+            android:layout_marginTop="@dimen/settings_address_margin"
+            android:layout_marginEnd="@dimen/settings_address_margin"
+            android:layout_marginBottom="@dimen/settings_address_margin"
             android:background="@drawable/item_grey_border_background"
             android:foreground="?attr/selectableItemBackground"
             android:orientation="horizontal"
@@ -179,11 +185,44 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/ll_shippingfees"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_address"
+            android:layout_marginStart="@dimen/settings_address_margin"
+            android:layout_marginTop="@dimen/settings_address_margin"
+            android:layout_marginEnd="@dimen/settings_address_margin"
+            android:layout_marginBottom="@dimen/settings_address_margin"
+            android:background="@drawable/item_grey_border_background"
+            android:foreground="?attr/selectableItemBackground"
+            android:orientation="horizontal"
+            android:padding="@dimen/settings_address_padding">
+
+            <com.example.daveexpress.utils.MSPTextView
+                android:id="@+id/shippingtv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/settings_lbl_addresses_margin"
+                android:layout_weight="1"
+                android:text="Shipping Fees"
+                android:textColor="@color/colorSecondaryText"
+                android:textSize="@dimen/settings_lbl_addresses_textSize" />
+
+            <ImageView
+                android:id="@+id/shippingarrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/content_description"
+                android:src="@drawable/ic_vector_chevron_right" />
+
+        </LinearLayout>
+
         <com.example.daveexpress.utils.MSPButton
             android:id="@+id/btn_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/ll_address"
+            android:layout_below="@id/ll_shippingfees"
             android:layout_gravity="center"
             android:layout_marginStart="@dimen/settings_button_marginStartEnd"
             android:layout_marginTop="@dimen/settings_button_marginTopBottom"
